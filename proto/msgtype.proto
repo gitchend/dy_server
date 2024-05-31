@@ -1,0 +1,36 @@
+syntax = "proto3";
+package message;
+option  go_package = "pb/";
+
+enum MSG_TYPE
+{
+    _ERROR                = 0;  //Error
+    _Login                = 1;  //Login
+    _LoginResult          = 2;  //LoginResult
+    _PlayStart            = 3;  //PlayStart
+    _PlayStartResult      = 4;  //PlayStartResult
+    _PlayEnd              = 5;  //PlayEnd
+    _PlayEndResult        = 6;  //PlayEndResult
+    _Report               = 7;  //Report
+    _ReportResult         = 8;  //ReportResult
+    _GetRank              = 9;  //GetRank
+    _GetRankResult        = 10; //GetRankResult
+    _NotifyNewAudience    = 11; //NotifyNewAudience
+    _NotifyAudienceAction = 12; //NotifyAudienceAction
+    _Ping                 = 21; //Ping
+    _Pong                 = 22; //Pong
+}
+
+enum ERROR_CODE
+{
+    SUCCESS         = 0;
+    FAIL            = 1;
+    INVALID_APPID   = 2;
+    INVALID_TOKEN   = 3;
+    GAME_IS_RUNNING = 4;
+    GAME_IS_STOPPED = 5;
+}
+
+message Error
+{
+}

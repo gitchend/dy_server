@@ -1,0 +1,121 @@
+syntax = "proto3";
+package message;
+option  go_package = "pb/";
+
+import "msgtype.proto";
+
+message Ping
+{
+    int64 ClientTime = 1; //客户端时间戳
+}
+
+message Pong
+{
+    int64 ServerTime = 1; //服务器本地时间戳
+    int64 ClientTime = 2; //客户端时间戳
+}
+
+message Login
+{
+    string AppId   = 1;
+    string Token   = 2;
+    bool   IsDebug = 3;
+}
+
+message LoginResult
+{
+    ERROR_CODE Result   = 1;
+    string     RoomId   = 2;
+    string     UID      = 3;
+    string     NickName = 4;
+}
+
+message PlayStart
+{
+}
+
+message PlayStartResult
+{
+    ERROR_CODE Result = 1;
+}
+
+message PlayEnd
+{
+}
+
+message PlayEndResult
+{
+    ERROR_CODE Result = 1;
+}
+
+message Report
+{
+    repeated ReportInfo Info = 1;
+}
+
+message ReportResult
+{
+    ERROR_CODE            Result = 1;
+    repeated AudienceInfo Info   = 2;
+}
+
+message GetRank
+{
+    int32 TopCount = 1;
+}
+
+message GetRankResult
+{
+    ERROR_CODE        Result = 1;
+    repeated Audience Info   = 2;
+}
+
+//新用户推送
+message NotifyNewAudience
+{
+    Audience Audience = 1;
+}
+//用户行为推送
+message NotifyAudienceAction
+{
+    string OpenId  = 1; //ID
+    string Content = 2; //评论
+    int32  LikeNum = 3; //点赞数量
+    string GiftId  = 4; //礼物ID
+    int32  GiftNum = 5; //礼物数量
+}
+
+//============结构============
+
+//上报分数信息
+message ReportInfo
+{
+    string OpenId = 1;
+    int32  Score  = 2;
+    bool   IsWin  = 3;
+}
+
+//观众信息
+message Audience
+{
+    AudienceBasic AudienceBasic = 1; //观众基本信息
+    AudienceInfo  AudienceInfo  = 2; //观众详细信息
+}
+
+//观众基本信息
+message AudienceBasic
+{
+    string OpenId    = 1; //ID
+    string NickName  = 2; //昵称
+    string AvatarUrl = 3; //头像url
+}
+
+//观众详细信息
+message AudienceInfo
+{
+    string OpenId        = 1; //ID
+    int32  Score         = 2; //总分
+    int32  Rank          = 3; //当前赛季排名
+    int32  LastRank      = 4; //上赛季排名
+    int32  WinningStreak = 5; //连胜
+}
