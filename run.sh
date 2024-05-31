@@ -1,2 +1,5 @@
 #!/bin/sh
-./opt/application/main
+cd /opt/application
+echo "$(pwd)"
+echo "$(ls)"
+./main
