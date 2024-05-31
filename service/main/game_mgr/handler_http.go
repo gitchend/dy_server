@@ -15,7 +15,7 @@ import (
 
 func RunHttp() error {
 	r := gin.Default()
-	r.HEAD("/v1/ping", OnPing)
+	r.GET("/v1/ping", OnPing)
 	r.HEAD("/push/:appId", OnDataPush)
 	r.POST("/push/:appId", OnDataPush)
 	return r.Run(":8000")
