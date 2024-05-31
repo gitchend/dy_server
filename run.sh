@@ -1,2 +1,2 @@
 #!/bin/sh
-cd /opt/application/ && ./main
+./opt/application/main
