@@ -10,4 +10,8 @@ COPY --from=builder /app/run.sh /opt/application/
 USER root
 RUN chmod -R 777 /opt/application/run.sh
 
+RUN apk update && \
+apk upgrade && \
+apk add bash
+
 CMD /opt/application/run.sh
