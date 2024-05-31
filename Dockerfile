@@ -16,5 +16,6 @@ COPY --from=builder /app/main /app/run.sh /opt/application/
 USER root
 
 RUN chmod -R 777 /opt/application/run.sh
+RUN chmod -R 777 /opt/application/main
 
 CMD /opt/application/run.sh
