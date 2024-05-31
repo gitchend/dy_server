@@ -2,6 +2,7 @@ package tools
 
 import (
 	"fmt"
+	"unsafe"
 )
 
 func AssertNil(v interface{}) {
@@ -21,4 +22,7 @@ func AssertTrue(b bool, msg string, param ...interface{}) {
 		info := fmt.Sprintf(msg, param...)
 		panic(info)
 	}
+}
+func IsNil(i interface{}) bool {
+	return (*[2]uintptr)(unsafe.Pointer(&i))[1] == 0
 }

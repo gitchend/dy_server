@@ -1,7 +1,7 @@
 FROM golang:1.20 as builder
 WORKDIR /app
 COPY . /app/
-RUN GOOS=linux GOARCH=amd64 CGO_ENABLED=0 go build -gcflags "all=-N -l" -o main -mod=vendor cmd/main/main.go
+RUN GOOS=linux GOARCH=amd64 CGO_ENABLED=0 go build -gcflags "all=-N -l" -o main -mod=vendor main.go
 
 FROM alpine:latest
 WORKDIR /opt/application
