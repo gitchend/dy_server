@@ -80,7 +80,6 @@ func SetAudienceBasic(appId string, data *pb.AudienceBasic) {
 	key := UserDataKey(appId, data.OpenId)
 	exist, err := client.Exists(ctx, key).Result()
 	if err != nil {
-		fmt.Println("[SetAudienceBasic err]", err)
 		return
 	}
 	if exist == 1 {
@@ -90,7 +89,8 @@ func SetAudienceBasic(appId string, data *pb.AudienceBasic) {
 	if err != nil {
 		return
 	}
-	client.Set(ctx, key, string(jsonData), -1)
+	cmd := client.Set(ctx, key, string(jsonData), -1)
+	fmt.Println("[SetAudienceBasic err]", cmd.Err())
 }
 
 func GetAudience(appId string, openId string) *pb.Audience {
