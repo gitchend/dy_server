@@ -75,10 +75,12 @@ func GetRank(appId string, topCount int32) ([]*pb.Audience, error) {
 }
 
 func SetAudienceBasic(appId string, data *pb.AudienceBasic) {
+	fmt.Println("[SetAudienceBasic]", data.OpenId, data)
 	ctx := context.Background()
 	key := UserDataKey(appId, data.OpenId)
 	exist, err := client.Exists(ctx, key).Result()
 	if err != nil {
+		fmt.Println("[SetAudienceBasic err]", err)
 		return
 	}
 	if exist == 1 {
