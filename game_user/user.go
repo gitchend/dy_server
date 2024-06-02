@@ -188,7 +188,7 @@ func (s *GameUser) OnReport(msg *pb.Report) {
 	})
 }
 func (s *GameUser) OnGetScoreRank(msg *pb.GetScoreRank) {
-	rankList, err := redis.GetRank(s.appId, msg.TopCount)
+	rankList, err := redis.GetScoreRank(s.appId, msg.TopCount)
 	if err != nil {
 		s.Log("OnGetScoreRank err", err)
 		s.sendUserMsg(&pb.GetScoreRankResult{Result: pb.ERROR_CODE_FAIL})
@@ -198,7 +198,7 @@ func (s *GameUser) OnGetScoreRank(msg *pb.GetScoreRank) {
 }
 
 func (s *GameUser) OnGetWinningStreakRank(msg *pb.GetWinningStreakRank) {
-	rankList, err := redis.GetRank(s.appId, msg.TopCount)
+	rankList, err := redis.GetWinningStreakRank(s.appId, msg.TopCount)
 	if err != nil {
 		s.Log("OnGetWinningStreakRank err", err)
 		s.sendUserMsg(&pb.GetWinningStreakRankResult{Result: pb.ERROR_CODE_FAIL})

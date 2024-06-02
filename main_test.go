@@ -7,7 +7,6 @@ import (
 	"github.com/gorilla/websocket"
 	"net/url"
 	"testing"
-	"time"
 )
 
 func TestName(t *testing.T) {
@@ -35,18 +34,14 @@ func TestName(t *testing.T) {
 		}
 	}()
 
-	msg := &pb.GetRank{
+	msg := &pb.GetScoreRank{
 		TopCount: 10,
 	}
 
-	for i := 0; i < 10; i++ {
-		fmt.Println(i)
-		err = message.SendMessage(conn, msg)
-		if err != nil {
-			fmt.Println("write:", err)
-			return
-		}
-		time.Sleep(time.Second)
+	err = message.SendMessage(conn, msg)
+	if err != nil {
+		fmt.Println("write:", err)
+		return
 	}
 	_ = <-done
 }

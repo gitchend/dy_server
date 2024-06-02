@@ -51,12 +51,13 @@ func UpdateReport(appId string, report *pb.Report) error {
 	return err
 }
 
-func GetRank(appId string, topCount int32) ([]*pb.Audience, error) {
+func GetScoreRank(appId string, topCount int32) ([]*pb.Audience, error) {
 	ctx := context.Background()
 	key := ThisWeekScoreKey(appId)
 	cmd := client.ZRangeWithScores(ctx, key, 0, int64(topCount))
 	result, err := cmd.Result()
 	if err != nil {
+		fmt.Println("GetScoreRank err", err)
 		return nil, err
 	}
 	var openIdList []string
@@ -66,6 +67,7 @@ func GetRank(appId string, topCount int32) ([]*pb.Audience, error) {
 	audienceBasicList := GetAudienceBasicList(appId, openIdList)
 	audienceInfoList := GetAudienceInfoList(appId, openIdList)
 	if len(openIdList) != len(audienceBasicList) || len(openIdList) != len(audienceInfoList) {
+		fmt.Println("GetScoreRank len err", len(openIdList), len(audienceBasicList), len(audienceInfoList))
 		return nil, fmt.Errorf("GetRank len err: %d %d %d", len(openIdList), len(audienceBasicList), len(audienceInfoList))
 	}
 	var ret []*pb.Audience
@@ -77,7 +79,34 @@ func GetRank(appId string, topCount int32) ([]*pb.Audience, error) {
 	}
 	return ret, nil
 }
-
+func GetWinningStreakRank(appId string, topCount int32) ([]*pb.Audience, error) {
+	ctx := context.Background()
+	key := ThisWeekScoreKey(appId)
+	cmd := client.ZRangeWithScores(ctx, key, 0, int64(topCount))
+	result, err := cmd.Result()
+	if err != nil {
+		fmt.Println("GetWinningStreakRank err", err)
+		return nil, err
+	}
+	var openIdList []string
+	for _, info := range result {
+		openIdList = append(openIdList, info.Member.(string))
+	}
+	audienceBasicList := GetAudienceBasicList(appId, openIdList)
+	audienceInfoList := GetAudienceInfoList(appId, openIdList)
+	if len(openIdList) != len(audienceBasicList) || len(openIdList) != len(audienceInfoList) {
+		fmt.Println("GetWinningStreakRank len err", len(openIdList), len(audienceBasicList), len(audienceInfoList))
+		return nil, fmt.Errorf("GetRank len err: %d %d %d", len(openIdList), len(audienceBasicList), len(audienceInfoList))
+	}
+	var ret []*pb.Audience
+	for i := range openIdList {
+		ret = append(ret, &pb.Audience{
+			AudienceBasic: audienceBasicList[i],
+			AudienceInfo:  audienceInfoList[i],
+		})
+	}
+	return ret, nil
+}
 func SetAudienceBasic(appId string, data *pb.AudienceBasic) {
 	fmt.Println("[SetAudienceBasic]", data.OpenId, data)
 	ctx := context.Background()
