@@ -138,11 +138,7 @@ func GetAudienceInfo(appId string, openId string) *pb.AudienceInfo {
 	cmdRankLast := pip.ZRank(ctx, keyScoreLast, openId)
 	cmdWiningStreak := pip.ZScore(ctx, keyWiningStreak, openId)
 	cmdUserDataCustom := pip.HGetAll(ctx, keyUserDataCustom)
-	_, err := pip.Exec(ctx)
-	if err != nil {
-		fmt.Println("[GetAudienceInfo err]", err)
-		return ret
-	}
+	_, _ = pip.Exec(ctx)
 	if result, err := cmdScore.Result(); err == nil {
 		ret.Score = int32(result)
 	}
@@ -174,10 +170,7 @@ func GetAudienceBasicList(appId string, openIdList []string) (ret []*pb.Audience
 		key := UserDataKey(appId, openId)
 		cmdList = append(cmdList, pip.Get(ctx, key))
 	}
-	_, err := pip.Exec(ctx)
-	if err != nil {
-		return nil
-	}
+	_, _ = pip.Exec(ctx)
 	for _, cmd := range cmdList {
 		data := &pb.AudienceBasic{}
 		if result, err := cmd.Result(); err == nil {
