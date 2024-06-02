@@ -12,6 +12,9 @@ func PublishKey(appId string, roomId string) string {
 func UserDataKey(appId string, openId string) string {
 	return fmt.Sprintf("UserData_%s_%s", appId, openId)
 }
+func UserDataCustomKey(appId string, openId string) string {
+	return fmt.Sprintf("UserData_%s_%s_Custom", appId, openId)
+}
 
 func WinningStreakKey(appId string) string {
 	return fmt.Sprintf("Global_%s_WinningStreak", appId)

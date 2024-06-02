@@ -26,7 +26,7 @@ type MSG_TYPE int32
 
 const (
 	MSG_TYPE__ERROR                MSG_TYPE = 0  //Error
-	MSG_TYPE__Login                MSG_TYPE = 1  //SdkLogin
+	MSG_TYPE__Login                MSG_TYPE = 1  //Login
 	MSG_TYPE__LoginResult          MSG_TYPE = 2  //LoginResult
 	MSG_TYPE__PlayStart            MSG_TYPE = 3  //PlayStart
 	MSG_TYPE__PlayStartResult      MSG_TYPE = 4  //PlayStartResult

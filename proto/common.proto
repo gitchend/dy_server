@@ -90,9 +90,10 @@ message NotifyAudienceAction
 //上报分数信息
 message ReportInfo
 {
-    string OpenId = 1;
-    int32  Score  = 2;
-    bool   IsWin  = 3;
+    string                      OpenId = 1;
+    int32                       Score  = 2;
+    bool                        IsWin  = 3;
+    map<string, AudienceCustom> Custom = 4; //自定义信息
 }
 
 //观众信息
@@ -113,9 +114,17 @@ message AudienceBasic
 //观众详细信息
 message AudienceInfo
 {
-    string OpenId        = 1; //ID
-    int32  Score         = 2; //总分
-    int32  Rank          = 3; //当前赛季排名
-    int32  LastRank      = 4; //上赛季排名
-    int32  WinningStreak = 5; //连胜
+    string                      OpenId        = 1; //ID
+    int32                       Score         = 2; //总分
+    int32                       Rank          = 3; //当前赛季排名
+    int32                       LastRank      = 4; //上赛季排名
+    int32                       WinningStreak = 5; //连胜
+    map<string, AudienceCustom> Custom        = 6; //自定义信息
+}
+
+//观众自定义信息
+message AudienceCustom
+{
+    string Value  = 2; //值
+    int32  Expire = 3; //过期时间
 }
