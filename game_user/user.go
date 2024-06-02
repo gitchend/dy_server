@@ -75,8 +75,10 @@ func (s *GameUser) OnRecv(msg proto.Message) {
 			s.OnPlayEnd(v)
 		case *pb.Report:
 			s.OnReport(v)
-		case *pb.GetRank:
-			s.OnGetRank(v)
+		case *pb.GetScoreRank:
+			s.OnGetScoreRank(v)
+		case *pb.GetWinningStreakRank:
+			s.OnGetWinningStreakRank(v)
 		default:
 			s.Log("Recv unknown", msg)
 		}
@@ -185,14 +187,24 @@ func (s *GameUser) OnReport(msg *pb.Report) {
 		Info:   result,
 	})
 }
-func (s *GameUser) OnGetRank(msg *pb.GetRank) {
+func (s *GameUser) OnGetScoreRank(msg *pb.GetScoreRank) {
 	rankList, err := redis.GetRank(s.appId, msg.TopCount)
 	if err != nil {
-		s.Log("OnGetRank err", err)
-		s.sendUserMsg(&pb.GetRankResult{Result: pb.ERROR_CODE_FAIL})
+		s.Log("OnGetScoreRank err", err)
+		s.sendUserMsg(&pb.GetScoreRankResult{Result: pb.ERROR_CODE_FAIL})
 		return
 	}
-	s.sendUserMsg(&pb.GetRankResult{Result: pb.ERROR_CODE_SUCCESS, Info: rankList})
+	s.sendUserMsg(&pb.GetScoreRankResult{Result: pb.ERROR_CODE_SUCCESS, Info: rankList})
+}
+
+func (s *GameUser) OnGetWinningStreakRank(msg *pb.GetWinningStreakRank) {
+	rankList, err := redis.GetRank(s.appId, msg.TopCount)
+	if err != nil {
+		s.Log("OnGetWinningStreakRank err", err)
+		s.sendUserMsg(&pb.GetWinningStreakRankResult{Result: pb.ERROR_CODE_FAIL})
+		return
+	}
+	s.sendUserMsg(&pb.GetWinningStreakRankResult{Result: pb.ERROR_CODE_SUCCESS, Info: rankList})
 }
 
 func (s *GameUser) setPushActive(isActive bool) {
