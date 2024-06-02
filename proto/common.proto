@@ -4,6 +4,7 @@ option  go_package = "pb/";
 
 import "msgtype.proto";
 
+//心跳
 message Ping
 {
     int64 ClientTime = 1; //客户端时间戳
@@ -15,6 +16,7 @@ message Pong
     int64 ClientTime = 2; //客户端时间戳
 }
 
+//登录
 message Login
 {
     string AppId   = 1;
@@ -30,6 +32,7 @@ message LoginResult
     string     NickName = 4;
 }
 
+//游戏开始
 message PlayStart
 {
 }
@@ -39,6 +42,7 @@ message PlayStartResult
     ERROR_CODE Result = 1;
 }
 
+//游戏结束
 message PlayEnd
 {
 }
@@ -48,6 +52,7 @@ message PlayEndResult
     ERROR_CODE Result = 1;
 }
 
+//结果上报
 message Report
 {
     repeated ReportInfo Info = 1;
@@ -59,12 +64,25 @@ message ReportResult
     repeated AudienceInfo Info   = 2;
 }
 
-message GetRank
+//获取分数排行
+message GetScoreRank
 {
     int32 TopCount = 1;
 }
 
-message GetRankResult
+message GetScoreRankResult
+{
+    ERROR_CODE        Result = 1;
+    repeated Audience Info   = 2;
+}
+
+//获取连胜排行
+message GetWinningStreakRank
+{
+    int32 TopCount = 1;
+}
+
+message GetWinningStreakRankResult
 {
     ERROR_CODE        Result = 1;
     repeated Audience Info   = 2;
@@ -114,12 +132,13 @@ message AudienceBasic
 //观众详细信息
 message AudienceInfo
 {
-    string                      OpenId        = 1; //ID
-    int32                       Score         = 2; //总分
-    int32                       Rank          = 3; //当前赛季排名
-    int32                       LastRank      = 4; //上赛季排名
-    int32                       WinningStreak = 5; //连胜
-    map<string, AudienceCustom> Custom        = 6; //自定义信息
+    string                      OpenId            = 1; //ID
+    int32                       Score             = 2; //总分
+    int32                       Rank              = 3; //当前赛季排名
+    int32                       LastRank          = 4; //上赛季排名
+    int32                       WinningStreakRank = 5; //连胜排名
+    int32                       WinningStreak     = 6; //连胜
+    map<string, AudienceCustom> Custom            = 7; //自定义信息
 }
 
 //观众自定义信息

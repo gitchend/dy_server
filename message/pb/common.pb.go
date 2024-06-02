@@ -22,6 +22,7 @@ const (
 	_ = protoimpl.EnforceVersion(protoimpl.MaxVersion - 20)
 )
 
+//心跳
 type Ping struct {
 	state         protoimpl.MessageState
 	sizeCache     protoimpl.SizeCache
@@ -157,6 +158,7 @@ func (x *Pong) SetClientTime(val int64) {
 	}
 }
 
+//登录
 type Login struct {
 	state         protoimpl.MessageState
 	sizeCache     protoimpl.SizeCache
@@ -344,6 +346,7 @@ func (x *LoginResult) SetNickName(val string) {
 	}
 }
 
+//游戏开始
 type PlayStart struct {
 	state         protoimpl.MessageState
 	sizeCache     protoimpl.SizeCache
@@ -451,6 +454,7 @@ func (x *PlayStartResult) SetResult(val ERROR_CODE) {
 	}
 }
 
+//游戏结束
 type PlayEnd struct {
 	state         protoimpl.MessageState
 	sizeCache     protoimpl.SizeCache
@@ -558,6 +562,7 @@ func (x *PlayEndResult) SetResult(val ERROR_CODE) {
 	}
 }
 
+//结果上报
 type Report struct {
 	state         protoimpl.MessageState
 	sizeCache     protoimpl.SizeCache
@@ -693,7 +698,8 @@ func (x *ReportResult) SetInfo(val []*AudienceInfo) {
 	}
 }
 
-type GetRank struct {
+//获取分数排行
+type GetScoreRank struct {
 	state         protoimpl.MessageState
 	sizeCache     protoimpl.SizeCache
 	unknownFields protoimpl.UnknownFields
@@ -701,8 +707,8 @@ type GetRank struct {
 	TopCount int32 `protobuf:"varint,1,opt,name=TopCount,json=topCount,proto3" json:"TopCount,omitempty"`
 }
 
-func (x *GetRank) Reset() {
-	*x = GetRank{}
+func (x *GetScoreRank) Reset() {
+	*x = GetScoreRank{}
 	if protoimpl.UnsafeEnabled {
 		mi := &file_common_proto_msgTypes[10]
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
@@ -710,21 +716,21 @@ func (x *GetRank) Reset() {
 	}
 }
 
-func (x *GetRank) String() string {
+func (x *GetScoreRank) String() string {
 	return protoimpl.X.MessageStringOf(x)
 }
 
-func (x *GetRank) FromDB(data []byte) error {
+func (x *GetScoreRank) FromDB(data []byte) error {
 	return proto.Unmarshal(data, x)
 }
 
-func (x *GetRank) ToDB() ([]byte, error) {
+func (x *GetScoreRank) ToDB() ([]byte, error) {
 	return proto.Marshal(x)
 }
 
-func (*GetRank) ProtoMessage() {}
+func (*GetScoreRank) ProtoMessage() {}
 
-func (x *GetRank) ProtoReflect() protoreflect.Message {
+func (x *GetScoreRank) ProtoReflect() protoreflect.Message {
 	mi := &file_common_proto_msgTypes[10]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
@@ -736,25 +742,25 @@ func (x *GetRank) ProtoReflect() protoreflect.Message {
 	return mi.MessageOf(x)
 }
 
-// Deprecated: Use GetRank.ProtoReflect.Descriptor instead.
-func (*GetRank) Descriptor() ([]byte, []int) {
+// Deprecated: Use GetScoreRank.ProtoReflect.Descriptor instead.
+func (*GetScoreRank) Descriptor() ([]byte, []int) {
 	return file_common_proto_rawDescGZIP(), []int{10}
 }
 
-func (x *GetRank) GetTopCount() int32 {
+func (x *GetScoreRank) GetTopCount() int32 {
 	if x != nil {
 		return x.TopCount
 	}
 	return 0
 }
 
-func (x *GetRank) SetTopCount(val int32) {
+func (x *GetScoreRank) SetTopCount(val int32) {
 	if x != nil {
 		x.TopCount = val
 	}
 }
 
-type GetRankResult struct {
+type GetScoreRankResult struct {
 	state         protoimpl.MessageState
 	sizeCache     protoimpl.SizeCache
 	unknownFields protoimpl.UnknownFields
@@ -763,8 +769,8 @@ type GetRankResult struct {
 	Info   []*Audience `protobuf:"bytes,2,rep,name=Info,json=info,proto3" json:"Info,omitempty"`
 }
 
-func (x *GetRankResult) Reset() {
-	*x = GetRankResult{}
+func (x *GetScoreRankResult) Reset() {
+	*x = GetScoreRankResult{}
 	if protoimpl.UnsafeEnabled {
 		mi := &file_common_proto_msgTypes[11]
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
@@ -772,21 +778,21 @@ func (x *GetRankResult) Reset() {
 	}
 }
 
-func (x *GetRankResult) String() string {
+func (x *GetScoreRankResult) String() string {
 	return protoimpl.X.MessageStringOf(x)
 }
 
-func (x *GetRankResult) FromDB(data []byte) error {
+func (x *GetScoreRankResult) FromDB(data []byte) error {
 	return proto.Unmarshal(data, x)
 }
 
-func (x *GetRankResult) ToDB() ([]byte, error) {
+func (x *GetScoreRankResult) ToDB() ([]byte, error) {
 	return proto.Marshal(x)
 }
 
-func (*GetRankResult) ProtoMessage() {}
+func (*GetScoreRankResult) ProtoMessage() {}
 
-func (x *GetRankResult) ProtoReflect() protoreflect.Message {
+func (x *GetScoreRankResult) ProtoReflect() protoreflect.Message {
 	mi := &file_common_proto_msgTypes[11]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
@@ -798,31 +804,167 @@ func (x *GetRankResult) ProtoReflect() protoreflect.Message {
 	return mi.MessageOf(x)
 }
 
-// Deprecated: Use GetRankResult.ProtoReflect.Descriptor instead.
-func (*GetRankResult) Descriptor() ([]byte, []int) {
+// Deprecated: Use GetScoreRankResult.ProtoReflect.Descriptor instead.
+func (*GetScoreRankResult) Descriptor() ([]byte, []int) {
 	return file_common_proto_rawDescGZIP(), []int{11}
 }
 
-func (x *GetRankResult) GetResult() ERROR_CODE {
+func (x *GetScoreRankResult) GetResult() ERROR_CODE {
 	if x != nil {
 		return x.Result
 	}
 	return ERROR_CODE_SUCCESS
 }
 
-func (x *GetRankResult) GetInfo() []*Audience {
+func (x *GetScoreRankResult) GetInfo() []*Audience {
 	if x != nil {
 		return x.Info
 	}
 	return nil
 }
 
-func (x *GetRankResult) SetResult(val ERROR_CODE) {
+func (x *GetScoreRankResult) SetResult(val ERROR_CODE) {
 	if x != nil {
 		x.Result = val
 	}
 }
-func (x *GetRankResult) SetInfo(val []*Audience) {
+func (x *GetScoreRankResult) SetInfo(val []*Audience) {
+	if x != nil {
+		x.Info = val
+	}
+}
+
+//获取连胜排行
+type GetWinningStreakRank struct {
+	state         protoimpl.MessageState
+	sizeCache     protoimpl.SizeCache
+	unknownFields protoimpl.UnknownFields
+
+	TopCount int32 `protobuf:"varint,1,opt,name=TopCount,json=topCount,proto3" json:"TopCount,omitempty"`
+}
+
+func (x *GetWinningStreakRank) Reset() {
+	*x = GetWinningStreakRank{}
+	if protoimpl.UnsafeEnabled {
+		mi := &file_common_proto_msgTypes[12]
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		ms.StoreMessageInfo(mi)
+	}
+}
+
+func (x *GetWinningStreakRank) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (x *GetWinningStreakRank) FromDB(data []byte) error {
+	return proto.Unmarshal(data, x)
+}
+
+func (x *GetWinningStreakRank) ToDB() ([]byte, error) {
+	return proto.Marshal(x)
+}
+
+func (*GetWinningStreakRank) ProtoMessage() {}
+
+func (x *GetWinningStreakRank) ProtoReflect() protoreflect.Message {
+	mi := &file_common_proto_msgTypes[12]
+	if protoimpl.UnsafeEnabled && x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use GetWinningStreakRank.ProtoReflect.Descriptor instead.
+func (*GetWinningStreakRank) Descriptor() ([]byte, []int) {
+	return file_common_proto_rawDescGZIP(), []int{12}
+}
+
+func (x *GetWinningStreakRank) GetTopCount() int32 {
+	if x != nil {
+		return x.TopCount
+	}
+	return 0
+}
+
+func (x *GetWinningStreakRank) SetTopCount(val int32) {
+	if x != nil {
+		x.TopCount = val
+	}
+}
+
+type GetWinningStreakRankResult struct {
+	state         protoimpl.MessageState
+	sizeCache     protoimpl.SizeCache
+	unknownFields protoimpl.UnknownFields
+
+	Result ERROR_CODE  `protobuf:"varint,1,opt,name=Result,json=result,proto3,enum=message.ERROR_CODE" json:"Result,omitempty"`
+	Info   []*Audience `protobuf:"bytes,2,rep,name=Info,json=info,proto3" json:"Info,omitempty"`
+}
+
+func (x *GetWinningStreakRankResult) Reset() {
+	*x = GetWinningStreakRankResult{}
+	if protoimpl.UnsafeEnabled {
+		mi := &file_common_proto_msgTypes[13]
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		ms.StoreMessageInfo(mi)
+	}
+}
+
+func (x *GetWinningStreakRankResult) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (x *GetWinningStreakRankResult) FromDB(data []byte) error {
+	return proto.Unmarshal(data, x)
+}
+
+func (x *GetWinningStreakRankResult) ToDB() ([]byte, error) {
+	return proto.Marshal(x)
+}
+
+func (*GetWinningStreakRankResult) ProtoMessage() {}
+
+func (x *GetWinningStreakRankResult) ProtoReflect() protoreflect.Message {
+	mi := &file_common_proto_msgTypes[13]
+	if protoimpl.UnsafeEnabled && x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use GetWinningStreakRankResult.ProtoReflect.Descriptor instead.
+func (*GetWinningStreakRankResult) Descriptor() ([]byte, []int) {
+	return file_common_proto_rawDescGZIP(), []int{13}
+}
+
+func (x *GetWinningStreakRankResult) GetResult() ERROR_CODE {
+	if x != nil {
+		return x.Result
+	}
+	return ERROR_CODE_SUCCESS
+}
+
+func (x *GetWinningStreakRankResult) GetInfo() []*Audience {
+	if x != nil {
+		return x.Info
+	}
+	return nil
+}
+
+func (x *GetWinningStreakRankResult) SetResult(val ERROR_CODE) {
+	if x != nil {
+		x.Result = val
+	}
+}
+func (x *GetWinningStreakRankResult) SetInfo(val []*Audience) {
 	if x != nil {
 		x.Info = val
 	}
@@ -840,7 +982,7 @@ type NotifyNewAudience struct {
 func (x *NotifyNewAudience) Reset() {
 	*x = NotifyNewAudience{}
 	if protoimpl.UnsafeEnabled {
-		mi := &file_common_proto_msgTypes[12]
+		mi := &file_common_proto_msgTypes[14]
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		ms.StoreMessageInfo(mi)
 	}
@@ -861,7 +1003,7 @@ func (x *NotifyNewAudience) ToDB() ([]byte, error) {
 func (*NotifyNewAudience) ProtoMessage() {}
 
 func (x *NotifyNewAudience) ProtoReflect() protoreflect.Message {
-	mi := &file_common_proto_msgTypes[12]
+	mi := &file_common_proto_msgTypes[14]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -874,7 +1016,7 @@ func (x *NotifyNewAudience) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use NotifyNewAudience.ProtoReflect.Descriptor instead.
 func (*NotifyNewAudience) Descriptor() ([]byte, []int) {
-	return file_common_proto_rawDescGZIP(), []int{12}
+	return file_common_proto_rawDescGZIP(), []int{14}
 }
 
 func (x *NotifyNewAudience) GetAudience() *Audience {
@@ -906,7 +1048,7 @@ type NotifyAudienceAction struct {
 func (x *NotifyAudienceAction) Reset() {
 	*x = NotifyAudienceAction{}
 	if protoimpl.UnsafeEnabled {
-		mi := &file_common_proto_msgTypes[13]
+		mi := &file_common_proto_msgTypes[15]
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		ms.StoreMessageInfo(mi)
 	}
@@ -927,7 +1069,7 @@ func (x *NotifyAudienceAction) ToDB() ([]byte, error) {
 func (*NotifyAudienceAction) ProtoMessage() {}
 
 func (x *NotifyAudienceAction) ProtoReflect() protoreflect.Message {
-	mi := &file_common_proto_msgTypes[13]
+	mi := &file_common_proto_msgTypes[15]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -940,7 +1082,7 @@ func (x *NotifyAudienceAction) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use NotifyAudienceAction.ProtoReflect.Descriptor instead.
 func (*NotifyAudienceAction) Descriptor() ([]byte, []int) {
-	return file_common_proto_rawDescGZIP(), []int{13}
+	return file_common_proto_rawDescGZIP(), []int{15}
 }
 
 func (x *NotifyAudienceAction) GetOpenId() string {
@@ -1019,7 +1161,7 @@ type ReportInfo struct {
 func (x *ReportInfo) Reset() {
 	*x = ReportInfo{}
 	if protoimpl.UnsafeEnabled {
-		mi := &file_common_proto_msgTypes[14]
+		mi := &file_common_proto_msgTypes[16]
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		ms.StoreMessageInfo(mi)
 	}
@@ -1040,7 +1182,7 @@ func (x *ReportInfo) ToDB() ([]byte, error) {
 func (*ReportInfo) ProtoMessage() {}
 
 func (x *ReportInfo) ProtoReflect() protoreflect.Message {
-	mi := &file_common_proto_msgTypes[14]
+	mi := &file_common_proto_msgTypes[16]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -1053,7 +1195,7 @@ func (x *ReportInfo) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use ReportInfo.ProtoReflect.Descriptor instead.
 func (*ReportInfo) Descriptor() ([]byte, []int) {
-	return file_common_proto_rawDescGZIP(), []int{14}
+	return file_common_proto_rawDescGZIP(), []int{16}
 }
 
 func (x *ReportInfo) GetOpenId() string {
@@ -1118,7 +1260,7 @@ type Audience struct {
 func (x *Audience) Reset() {
 	*x = Audience{}
 	if protoimpl.UnsafeEnabled {
-		mi := &file_common_proto_msgTypes[15]
+		mi := &file_common_proto_msgTypes[17]
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		ms.StoreMessageInfo(mi)
 	}
@@ -1139,7 +1281,7 @@ func (x *Audience) ToDB() ([]byte, error) {
 func (*Audience) ProtoMessage() {}
 
 func (x *Audience) ProtoReflect() protoreflect.Message {
-	mi := &file_common_proto_msgTypes[15]
+	mi := &file_common_proto_msgTypes[17]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -1152,7 +1294,7 @@ func (x *Audience) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use Audience.ProtoReflect.Descriptor instead.
 func (*Audience) Descriptor() ([]byte, []int) {
-	return file_common_proto_rawDescGZIP(), []int{15}
+	return file_common_proto_rawDescGZIP(), []int{17}
 }
 
 func (x *Audience) GetAudienceBasic() *AudienceBasic {
@@ -1194,7 +1336,7 @@ type AudienceBasic struct {
 func (x *AudienceBasic) Reset() {
 	*x = AudienceBasic{}
 	if protoimpl.UnsafeEnabled {
-		mi := &file_common_proto_msgTypes[16]
+		mi := &file_common_proto_msgTypes[18]
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		ms.StoreMessageInfo(mi)
 	}
@@ -1215,7 +1357,7 @@ func (x *AudienceBasic) ToDB() ([]byte, error) {
 func (*AudienceBasic) ProtoMessage() {}
 
 func (x *AudienceBasic) ProtoReflect() protoreflect.Message {
-	mi := &file_common_proto_msgTypes[16]
+	mi := &file_common_proto_msgTypes[18]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -1228,7 +1370,7 @@ func (x *AudienceBasic) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use AudienceBasic.ProtoReflect.Descriptor instead.
 func (*AudienceBasic) Descriptor() ([]byte, []int) {
-	return file_common_proto_rawDescGZIP(), []int{16}
+	return file_common_proto_rawDescGZIP(), []int{18}
 }
 
 func (x *AudienceBasic) GetOpenId() string {
@@ -1274,18 +1416,19 @@ type AudienceInfo struct {
 	sizeCache     protoimpl.SizeCache
 	unknownFields protoimpl.UnknownFields
 
-	OpenId        string                     `protobuf:"bytes,1,opt,name=OpenId,json=openId,proto3" json:"OpenId,omitempty"`                                                                                         //ID
-	Score         int32                      `protobuf:"varint,2,opt,name=Score,json=score,proto3" json:"Score,omitempty"`                                                                                           //总分
-	Rank          int32                      `protobuf:"varint,3,opt,name=Rank,json=rank,proto3" json:"Rank,omitempty"`                                                                                              //当前赛季排名
-	LastRank      int32                      `protobuf:"varint,4,opt,name=LastRank,json=lastRank,proto3" json:"LastRank,omitempty"`                                                                                  //上赛季排名
-	WinningStreak int32                      `protobuf:"varint,5,opt,name=WinningStreak,json=winningStreak,proto3" json:"WinningStreak,omitempty"`                                                                   //连胜
-	Custom        map[string]*AudienceCustom `protobuf:"bytes,6,rep,name=Custom,json=custom,proto3" json:"Custom,omitempty" protobuf_key:"bytes,1,opt,name=key,proto3" protobuf_val:"bytes,2,opt,name=value,proto3"` //自定义信息
+	OpenId            string                     `protobuf:"bytes,1,opt,name=OpenId,json=openId,proto3" json:"OpenId,omitempty"`                                                                                         //ID
+	Score             int32                      `protobuf:"varint,2,opt,name=Score,json=score,proto3" json:"Score,omitempty"`                                                                                           //总分
+	Rank              int32                      `protobuf:"varint,3,opt,name=Rank,json=rank,proto3" json:"Rank,omitempty"`                                                                                              //当前赛季排名
+	LastRank          int32                      `protobuf:"varint,4,opt,name=LastRank,json=lastRank,proto3" json:"LastRank,omitempty"`                                                                                  //上赛季排名
+	WinningStreakRank int32                      `protobuf:"varint,5,opt,name=WinningStreakRank,json=winningStreakRank,proto3" json:"WinningStreakRank,omitempty"`                                                       //连胜排名
+	WinningStreak     int32                      `protobuf:"varint,6,opt,name=WinningStreak,json=winningStreak,proto3" json:"WinningStreak,omitempty"`                                                                   //连胜
+	Custom            map[string]*AudienceCustom `protobuf:"bytes,7,rep,name=Custom,json=custom,proto3" json:"Custom,omitempty" protobuf_key:"bytes,1,opt,name=key,proto3" protobuf_val:"bytes,2,opt,name=value,proto3"` //自定义信息
 }
 
 func (x *AudienceInfo) Reset() {
 	*x = AudienceInfo{}
 	if protoimpl.UnsafeEnabled {
-		mi := &file_common_proto_msgTypes[17]
+		mi := &file_common_proto_msgTypes[19]
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		ms.StoreMessageInfo(mi)
 	}
@@ -1306,7 +1449,7 @@ func (x *AudienceInfo) ToDB() ([]byte, error) {
 func (*AudienceInfo) ProtoMessage() {}
 
 func (x *AudienceInfo) ProtoReflect() protoreflect.Message {
-	mi := &file_common_proto_msgTypes[17]
+	mi := &file_common_proto_msgTypes[19]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -1319,7 +1462,7 @@ func (x *AudienceInfo) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use AudienceInfo.ProtoReflect.Descriptor instead.
 func (*AudienceInfo) Descriptor() ([]byte, []int) {
-	return file_common_proto_rawDescGZIP(), []int{17}
+	return file_common_proto_rawDescGZIP(), []int{19}
 }
 
 func (x *AudienceInfo) GetOpenId() string {
@@ -1346,6 +1489,13 @@ func (x *AudienceInfo) GetRank() int32 {
 func (x *AudienceInfo) GetLastRank() int32 {
 	if x != nil {
 		return x.LastRank
+	}
+	return 0
+}
+
+func (x *AudienceInfo) GetWinningStreakRank() int32 {
+	if x != nil {
+		return x.WinningStreakRank
 	}
 	return 0
 }
@@ -1384,6 +1534,11 @@ func (x *AudienceInfo) SetLastRank(val int32) {
 		x.LastRank = val
 	}
 }
+func (x *AudienceInfo) SetWinningStreakRank(val int32) {
+	if x != nil {
+		x.WinningStreakRank = val
+	}
+}
 func (x *AudienceInfo) SetWinningStreak(val int32) {
 	if x != nil {
 		x.WinningStreak = val
@@ -1408,7 +1563,7 @@ type AudienceCustom struct {
 func (x *AudienceCustom) Reset() {
 	*x = AudienceCustom{}
 	if protoimpl.UnsafeEnabled {
-		mi := &file_common_proto_msgTypes[18]
+		mi := &file_common_proto_msgTypes[20]
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		ms.StoreMessageInfo(mi)
 	}
@@ -1429,7 +1584,7 @@ func (x *AudienceCustom) ToDB() ([]byte, error) {
 func (*AudienceCustom) ProtoMessage() {}
 
 func (x *AudienceCustom) ProtoReflect() protoreflect.Message {
-	mi := &file_common_proto_msgTypes[18]
+	mi := &file_common_proto_msgTypes[20]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -1442,7 +1597,7 @@ func (x *AudienceCustom) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use AudienceCustom.ProtoReflect.Descriptor instead.
 func (*AudienceCustom) Descriptor() ([]byte, []int) {
-	return file_common_proto_rawDescGZIP(), []int{18}
+	return file_common_proto_rawDescGZIP(), []int{20}
 }
 
 func (x *AudienceCustom) GetValue() string {
@@ -1514,10 +1669,21 @@ var file_common_proto_rawDesc = []byte{
 	0x52, 0x5f, 0x43, 0x4f, 0x44, 0x45, 0x52, 0x06, 0x72, 0x65, 0x73, 0x75, 0x6c, 0x74, 0x12, 0x29,
 	0x0a, 0x04, 0x49, 0x6e, 0x66, 0x6f, 0x18, 0x02, 0x20, 0x03, 0x28, 0x0b, 0x32, 0x15, 0x2e, 0x6d,
 	0x65, 0x73, 0x73, 0x61, 0x67, 0x65, 0x2e, 0x41, 0x75, 0x64, 0x69, 0x65, 0x6e, 0x63, 0x65, 0x49,
-	0x6e, 0x66, 0x6f, 0x52, 0x04, 0x69, 0x6e, 0x66, 0x6f, 0x22, 0x25, 0x0a, 0x07, 0x47, 0x65, 0x74,
-	0x52, 0x61, 0x6e, 0x6b, 0x12, 0x1a, 0x0a, 0x08, 0x54, 0x6f, 0x70, 0x43, 0x6f, 0x75, 0x6e, 0x74,
-	0x18, 0x01, 0x20, 0x01, 0x28, 0x05, 0x52, 0x08, 0x74, 0x6f, 0x70, 0x43, 0x6f, 0x75, 0x6e, 0x74,
-	0x22, 0x63, 0x0a, 0x0d, 0x47, 0x65, 0x74, 0x52, 0x61, 0x6e, 0x6b, 0x52, 0x65, 0x73, 0x75, 0x6c,
+	0x6e, 0x66, 0x6f, 0x52, 0x04, 0x69, 0x6e, 0x66, 0x6f, 0x22, 0x2a, 0x0a, 0x0c, 0x47, 0x65, 0x74,
+	0x53, 0x63, 0x6f, 0x72, 0x65, 0x52, 0x61, 0x6e, 0x6b, 0x12, 0x1a, 0x0a, 0x08, 0x54, 0x6f, 0x70,
+	0x43, 0x6f, 0x75, 0x6e, 0x74, 0x18, 0x01, 0x20, 0x01, 0x28, 0x05, 0x52, 0x08, 0x74, 0x6f, 0x70,
+	0x43, 0x6f, 0x75, 0x6e, 0x74, 0x22, 0x68, 0x0a, 0x12, 0x47, 0x65, 0x74, 0x53, 0x63, 0x6f, 0x72,
+	0x65, 0x52, 0x61, 0x6e, 0x6b, 0x52, 0x65, 0x73, 0x75, 0x6c, 0x74, 0x12, 0x2b, 0x0a, 0x06, 0x52,
+	0x65, 0x73, 0x75, 0x6c, 0x74, 0x18, 0x01, 0x20, 0x01, 0x28, 0x0e, 0x32, 0x13, 0x2e, 0x6d, 0x65,
+	0x73, 0x73, 0x61, 0x67, 0x65, 0x2e, 0x45, 0x52, 0x52, 0x4f, 0x52, 0x5f, 0x43, 0x4f, 0x44, 0x45,
+	0x52, 0x06, 0x72, 0x65, 0x73, 0x75, 0x6c, 0x74, 0x12, 0x25, 0x0a, 0x04, 0x49, 0x6e, 0x66, 0x6f,
+	0x18, 0x02, 0x20, 0x03, 0x28, 0x0b, 0x32, 0x11, 0x2e, 0x6d, 0x65, 0x73, 0x73, 0x61, 0x67, 0x65,
+	0x2e, 0x41, 0x75, 0x64, 0x69, 0x65, 0x6e, 0x63, 0x65, 0x52, 0x04, 0x69, 0x6e, 0x66, 0x6f, 0x22,
+	0x32, 0x0a, 0x14, 0x47, 0x65, 0x74, 0x57, 0x69, 0x6e, 0x6e, 0x69, 0x6e, 0x67, 0x53, 0x74, 0x72,
+	0x65, 0x61, 0x6b, 0x52, 0x61, 0x6e, 0x6b, 0x12, 0x1a, 0x0a, 0x08, 0x54, 0x6f, 0x70, 0x43, 0x6f,
+	0x75, 0x6e, 0x74, 0x18, 0x01, 0x20, 0x01, 0x28, 0x05, 0x52, 0x08, 0x74, 0x6f, 0x70, 0x43, 0x6f,
+	0x75, 0x6e, 0x74, 0x22, 0x70, 0x0a, 0x1a, 0x47, 0x65, 0x74, 0x57, 0x69, 0x6e, 0x6e, 0x69, 0x6e,
+	0x67, 0x53, 0x74, 0x72, 0x65, 0x61, 0x6b, 0x52, 0x61, 0x6e, 0x6b, 0x52, 0x65, 0x73, 0x75, 0x6c,
 	0x74, 0x12, 0x2b, 0x0a, 0x06, 0x52, 0x65, 0x73, 0x75, 0x6c, 0x74, 0x18, 0x01, 0x20, 0x01, 0x28,
 	0x0e, 0x32, 0x13, 0x2e, 0x6d, 0x65, 0x73, 0x73, 0x61, 0x67, 0x65, 0x2e, 0x45, 0x52, 0x52, 0x4f,
 	0x52, 0x5f, 0x43, 0x4f, 0x44, 0x45, 0x52, 0x06, 0x72, 0x65, 0x73, 0x75, 0x6c, 0x74, 0x12, 0x25,
@@ -1565,30 +1731,33 @@ var file_common_proto_rawDesc = []byte{
 	0x1a, 0x0a, 0x08, 0x4e, 0x69, 0x63, 0x6b, 0x4e, 0x61, 0x6d, 0x65, 0x18, 0x02, 0x20, 0x01, 0x28,
 	0x09, 0x52, 0x08, 0x6e, 0x69, 0x63, 0x6b, 0x4e, 0x61, 0x6d, 0x65, 0x12, 0x1c, 0x0a, 0x09, 0x41,
 	0x76, 0x61, 0x74, 0x61, 0x72, 0x55, 0x72, 0x6c, 0x18, 0x03, 0x20, 0x01, 0x28, 0x09, 0x52, 0x09,
-	0x61, 0x76, 0x61, 0x74, 0x61, 0x72, 0x55, 0x72, 0x6c, 0x22, 0xa1, 0x02, 0x0a, 0x0c, 0x41, 0x75,
+	0x61, 0x76, 0x61, 0x74, 0x61, 0x72, 0x55, 0x72, 0x6c, 0x22, 0xcf, 0x02, 0x0a, 0x0c, 0x41, 0x75,
 	0x64, 0x69, 0x65, 0x6e, 0x63, 0x65, 0x49, 0x6e, 0x66, 0x6f, 0x12, 0x16, 0x0a, 0x06, 0x4f, 0x70,
 	0x65, 0x6e, 0x49, 0x64, 0x18, 0x01, 0x20, 0x01, 0x28, 0x09, 0x52, 0x06, 0x6f, 0x70, 0x65, 0x6e,
 	0x49, 0x64, 0x12, 0x14, 0x0a, 0x05, 0x53, 0x63, 0x6f, 0x72, 0x65, 0x18, 0x02, 0x20, 0x01, 0x28,
 	0x05, 0x52, 0x05, 0x73, 0x63, 0x6f, 0x72, 0x65, 0x12, 0x12, 0x0a, 0x04, 0x52, 0x61, 0x6e, 0x6b,
 	0x18, 0x03, 0x20, 0x01, 0x28, 0x05, 0x52, 0x04, 0x72, 0x61, 0x6e, 0x6b, 0x12, 0x1a, 0x0a, 0x08,
 	0x4c, 0x61, 0x73, 0x74, 0x52, 0x61, 0x6e, 0x6b, 0x18, 0x04, 0x20, 0x01, 0x28, 0x05, 0x52, 0x08,
-	0x6c, 0x61, 0x73, 0x74, 0x52, 0x61, 0x6e, 0x6b, 0x12, 0x24, 0x0a, 0x0d, 0x57, 0x69, 0x6e, 0x6e,
-	0x69, 0x6e, 0x67, 0x53, 0x74, 0x72, 0x65, 0x61, 0x6b, 0x18, 0x05, 0x20, 0x01, 0x28, 0x05, 0x52,
-	0x0d, 0x77, 0x69, 0x6e, 0x6e, 0x69, 0x6e, 0x67, 0x53, 0x74, 0x72, 0x65, 0x61, 0x6b, 0x12, 0x39,
-	0x0a, 0x06, 0x43, 0x75, 0x73, 0x74, 0x6f, 0x6d, 0x18, 0x06, 0x20, 0x03, 0x28, 0x0b, 0x32, 0x21,
-	0x2e, 0x6d, 0x65, 0x73, 0x73, 0x61, 0x67, 0x65, 0x2e, 0x41, 0x75, 0x64, 0x69, 0x65, 0x6e, 0x63,
-	0x65, 0x49, 0x6e, 0x66, 0x6f, 0x2e, 0x43, 0x75, 0x73, 0x74, 0x6f, 0x6d, 0x45, 0x6e, 0x74, 0x72,
-	0x79, 0x52, 0x06, 0x63, 0x75, 0x73, 0x74, 0x6f, 0x6d, 0x1a, 0x52, 0x0a, 0x0b, 0x43, 0x75, 0x73,
-	0x74, 0x6f, 0x6d, 0x45, 0x6e, 0x74, 0x72, 0x79, 0x12, 0x10, 0x0a, 0x03, 0x6b, 0x65, 0x79, 0x18,
-	0x01, 0x20, 0x01, 0x28, 0x09, 0x52, 0x03, 0x6b, 0x65, 0x79, 0x12, 0x2d, 0x0a, 0x05, 0x76, 0x61,
-	0x6c, 0x75, 0x65, 0x18, 0x02, 0x20, 0x01, 0x28, 0x0b, 0x32, 0x17, 0x2e, 0x6d, 0x65, 0x73, 0x73,
-	0x61, 0x67, 0x65, 0x2e, 0x41, 0x75, 0x64, 0x69, 0x65, 0x6e, 0x63, 0x65, 0x43, 0x75, 0x73, 0x74,
-	0x6f, 0x6d, 0x52, 0x05, 0x76, 0x61, 0x6c, 0x75, 0x65, 0x3a, 0x02, 0x38, 0x01, 0x22, 0x3e, 0x0a,
-	0x0e, 0x41, 0x75, 0x64, 0x69, 0x65, 0x6e, 0x63, 0x65, 0x43, 0x75, 0x73, 0x74, 0x6f, 0x6d, 0x12,
-	0x14, 0x0a, 0x05, 0x56, 0x61, 0x6c, 0x75, 0x65, 0x18, 0x02, 0x20, 0x01, 0x28, 0x09, 0x52, 0x05,
-	0x76, 0x61, 0x6c, 0x75, 0x65, 0x12, 0x16, 0x0a, 0x06, 0x45, 0x78, 0x70, 0x69, 0x72, 0x65, 0x18,
-	0x03, 0x20, 0x01, 0x28, 0x05, 0x52, 0x06, 0x65, 0x78, 0x70, 0x69, 0x72, 0x65, 0x42, 0x05, 0x5a,
-	0x03, 0x70, 0x62, 0x2f, 0x62, 0x06, 0x70, 0x72, 0x6f, 0x74, 0x6f, 0x33,
+	0x6c, 0x61, 0x73, 0x74, 0x52, 0x61, 0x6e, 0x6b, 0x12, 0x2c, 0x0a, 0x11, 0x57, 0x69, 0x6e, 0x6e,
+	0x69, 0x6e, 0x67, 0x53, 0x74, 0x72, 0x65, 0x61, 0x6b, 0x52, 0x61, 0x6e, 0x6b, 0x18, 0x05, 0x20,
+	0x01, 0x28, 0x05, 0x52, 0x11, 0x77, 0x69, 0x6e, 0x6e, 0x69, 0x6e, 0x67, 0x53, 0x74, 0x72, 0x65,
+	0x61, 0x6b, 0x52, 0x61, 0x6e, 0x6b, 0x12, 0x24, 0x0a, 0x0d, 0x57, 0x69, 0x6e, 0x6e, 0x69, 0x6e,
+	0x67, 0x53, 0x74, 0x72, 0x65, 0x61, 0x6b, 0x18, 0x06, 0x20, 0x01, 0x28, 0x05, 0x52, 0x0d, 0x77,
+	0x69, 0x6e, 0x6e, 0x69, 0x6e, 0x67, 0x53, 0x74, 0x72, 0x65, 0x61, 0x6b, 0x12, 0x39, 0x0a, 0x06,
+	0x43, 0x75, 0x73, 0x74, 0x6f, 0x6d, 0x18, 0x07, 0x20, 0x03, 0x28, 0x0b, 0x32, 0x21, 0x2e, 0x6d,
+	0x65, 0x73, 0x73, 0x61, 0x67, 0x65, 0x2e, 0x41, 0x75, 0x64, 0x69, 0x65, 0x6e, 0x63, 0x65, 0x49,
+	0x6e, 0x66, 0x6f, 0x2e, 0x43, 0x75, 0x73, 0x74, 0x6f, 0x6d, 0x45, 0x6e, 0x74, 0x72, 0x79, 0x52,
+	0x06, 0x63, 0x75, 0x73, 0x74, 0x6f, 0x6d, 0x1a, 0x52, 0x0a, 0x0b, 0x43, 0x75, 0x73, 0x74, 0x6f,
+	0x6d, 0x45, 0x6e, 0x74, 0x72, 0x79, 0x12, 0x10, 0x0a, 0x03, 0x6b, 0x65, 0x79, 0x18, 0x01, 0x20,
+	0x01, 0x28, 0x09, 0x52, 0x03, 0x6b, 0x65, 0x79, 0x12, 0x2d, 0x0a, 0x05, 0x76, 0x61, 0x6c, 0x75,
+	0x65, 0x18, 0x02, 0x20, 0x01, 0x28, 0x0b, 0x32, 0x17, 0x2e, 0x6d, 0x65, 0x73, 0x73, 0x61, 0x67,
+	0x65, 0x2e, 0x41, 0x75, 0x64, 0x69, 0x65, 0x6e, 0x63, 0x65, 0x43, 0x75, 0x73, 0x74, 0x6f, 0x6d,
+	0x52, 0x05, 0x76, 0x61, 0x6c, 0x75, 0x65, 0x3a, 0x02, 0x38, 0x01, 0x22, 0x3e, 0x0a, 0x0e, 0x41,
+	0x75, 0x64, 0x69, 0x65, 0x6e, 0x63, 0x65, 0x43, 0x75, 0x73, 0x74, 0x6f, 0x6d, 0x12, 0x14, 0x0a,
+	0x05, 0x56, 0x61, 0x6c, 0x75, 0x65, 0x18, 0x02, 0x20, 0x01, 0x28, 0x09, 0x52, 0x05, 0x76, 0x61,
+	0x6c, 0x75, 0x65, 0x12, 0x16, 0x0a, 0x06, 0x45, 0x78, 0x70, 0x69, 0x72, 0x65, 0x18, 0x03, 0x20,
+	0x01, 0x28, 0x05, 0x52, 0x06, 0x65, 0x78, 0x70, 0x69, 0x72, 0x65, 0x42, 0x05, 0x5a, 0x03, 0x70,
+	0x62, 0x2f, 0x62, 0x06, 0x70, 0x72, 0x6f, 0x74, 0x6f, 0x33,
 }
 
 var (
@@ -1603,52 +1772,56 @@ func file_common_proto_rawDescGZIP() []byte {
 	return file_common_proto_rawDescData
 }
 
-var file_common_proto_msgTypes = make([]protoimpl.MessageInfo, 21)
+var file_common_proto_msgTypes = make([]protoimpl.MessageInfo, 23)
 var file_common_proto_goTypes = []interface{}{
-	(*Ping)(nil),                 // 0: message.Ping
-	(*Pong)(nil),                 // 1: message.Pong
-	(*Login)(nil),                // 2: message.Login
-	(*LoginResult)(nil),          // 3: message.LoginResult
-	(*PlayStart)(nil),            // 4: message.PlayStart
-	(*PlayStartResult)(nil),      // 5: message.PlayStartResult
-	(*PlayEnd)(nil),              // 6: message.PlayEnd
-	(*PlayEndResult)(nil),        // 7: message.PlayEndResult
-	(*Report)(nil),               // 8: message.Report
-	(*ReportResult)(nil),         // 9: message.ReportResult
-	(*GetRank)(nil),              // 10: message.GetRank
-	(*GetRankResult)(nil),        // 11: message.GetRankResult
-	(*NotifyNewAudience)(nil),    // 12: message.NotifyNewAudience
-	(*NotifyAudienceAction)(nil), // 13: message.NotifyAudienceAction
-	(*ReportInfo)(nil),           // 14: message.ReportInfo
-	(*Audience)(nil),             // 15: message.Audience
-	(*AudienceBasic)(nil),        // 16: message.AudienceBasic
-	(*AudienceInfo)(nil),         // 17: message.AudienceInfo
-	(*AudienceCustom)(nil),       // 18: message.AudienceCustom
-	nil,                          // 19: message.ReportInfo.CustomEntry
-	nil,                          // 20: message.AudienceInfo.CustomEntry
-	(ERROR_CODE)(0),              // 21: message.ERROR_CODE
+	(*Ping)(nil),                       // 0: message.Ping
+	(*Pong)(nil),                       // 1: message.Pong
+	(*Login)(nil),                      // 2: message.Login
+	(*LoginResult)(nil),                // 3: message.LoginResult
+	(*PlayStart)(nil),                  // 4: message.PlayStart
+	(*PlayStartResult)(nil),            // 5: message.PlayStartResult
+	(*PlayEnd)(nil),                    // 6: message.PlayEnd
+	(*PlayEndResult)(nil),              // 7: message.PlayEndResult
+	(*Report)(nil),                     // 8: message.Report
+	(*ReportResult)(nil),               // 9: message.ReportResult
+	(*GetScoreRank)(nil),               // 10: message.GetScoreRank
+	(*GetScoreRankResult)(nil),         // 11: message.GetScoreRankResult
+	(*GetWinningStreakRank)(nil),       // 12: message.GetWinningStreakRank
+	(*GetWinningStreakRankResult)(nil), // 13: message.GetWinningStreakRankResult
+	(*NotifyNewAudience)(nil),          // 14: message.NotifyNewAudience
+	(*NotifyAudienceAction)(nil),       // 15: message.NotifyAudienceAction
+	(*ReportInfo)(nil),                 // 16: message.ReportInfo
+	(*Audience)(nil),                   // 17: message.Audience
+	(*AudienceBasic)(nil),              // 18: message.AudienceBasic
+	(*AudienceInfo)(nil),               // 19: message.AudienceInfo
+	(*AudienceCustom)(nil),             // 20: message.AudienceCustom
+	nil,                                // 21: message.ReportInfo.CustomEntry
+	nil,                                // 22: message.AudienceInfo.CustomEntry
+	(ERROR_CODE)(0),                    // 23: message.ERROR_CODE
 }
 var file_common_proto_depIdxs = []int32{
-	21, // 0: message.LoginResult.Result:type_name -> message.ERROR_CODE
-	21, // 1: message.PlayStartResult.Result:type_name -> message.ERROR_CODE
-	21, // 2: message.PlayEndResult.Result:type_name -> message.ERROR_CODE
-	14, // 3: message.Report.Info:type_name -> message.ReportInfo
-	21, // 4: message.ReportResult.Result:type_name -> message.ERROR_CODE
-	17, // 5: message.ReportResult.Info:type_name -> message.AudienceInfo
-	21, // 6: message.GetRankResult.Result:type_name -> message.ERROR_CODE
-	15, // 7: message.GetRankResult.Info:type_name -> message.Audience
-	15, // 8: message.NotifyNewAudience.Audience:type_name -> message.Audience
-	19, // 9: message.ReportInfo.Custom:type_name -> message.ReportInfo.CustomEntry
-	16, // 10: message.Audience.AudienceBasic:type_name -> message.AudienceBasic
-	17, // 11: message.Audience.AudienceInfo:type_name -> message.AudienceInfo
-	20, // 12: message.AudienceInfo.Custom:type_name -> message.AudienceInfo.CustomEntry
-	18, // 13: message.ReportInfo.CustomEntry.value:type_name -> message.AudienceCustom
-	18, // 14: message.AudienceInfo.CustomEntry.value:type_name -> message.AudienceCustom
-	15, // [15:15] is the sub-list for method output_type
-	15, // [15:15] is the sub-list for method input_type
-	15, // [15:15] is the sub-list for extension type_name
-	15, // [15:15] is the sub-list for extension extendee
-	0,  // [0:15] is the sub-list for field type_name
+	23, // 0: message.LoginResult.Result:type_name -> message.ERROR_CODE
+	23, // 1: message.PlayStartResult.Result:type_name -> message.ERROR_CODE
+	23, // 2: message.PlayEndResult.Result:type_name -> message.ERROR_CODE
+	16, // 3: message.Report.Info:type_name -> message.ReportInfo
+	23, // 4: message.ReportResult.Result:type_name -> message.ERROR_CODE
+	19, // 5: message.ReportResult.Info:type_name -> message.AudienceInfo
+	23, // 6: message.GetScoreRankResult.Result:type_name -> message.ERROR_CODE
+	17, // 7: message.GetScoreRankResult.Info:type_name -> message.Audience
+	23, // 8: message.GetWinningStreakRankResult.Result:type_name -> message.ERROR_CODE
+	17, // 9: message.GetWinningStreakRankResult.Info:type_name -> message.Audience
+	17, // 10: message.NotifyNewAudience.Audience:type_name -> message.Audience
+	21, // 11: message.ReportInfo.Custom:type_name -> message.ReportInfo.CustomEntry
+	18, // 12: message.Audience.AudienceBasic:type_name -> message.AudienceBasic
+	19, // 13: message.Audience.AudienceInfo:type_name -> message.AudienceInfo
+	22, // 14: message.AudienceInfo.Custom:type_name -> message.AudienceInfo.CustomEntry
+	20, // 15: message.ReportInfo.CustomEntry.value:type_name -> message.AudienceCustom
+	20, // 16: message.AudienceInfo.CustomEntry.value:type_name -> message.AudienceCustom
+	17, // [17:17] is the sub-list for method output_type
+	17, // [17:17] is the sub-list for method input_type
+	17, // [17:17] is the sub-list for extension type_name
+	17, // [17:17] is the sub-list for extension extendee
+	0,  // [0:17] is the sub-list for field type_name
 }
 
 func init() { file_common_proto_init() }
@@ -1779,7 +1952,7 @@ func file_common_proto_init() {
 			}
 		}
 		file_common_proto_msgTypes[10].Exporter = func(v interface{}, i int) interface{} {
-			switch v := v.(*GetRank); i {
+			switch v := v.(*GetScoreRank); i {
 			case 0:
 				return &v.state
 			case 1:
@@ -1791,7 +1964,7 @@ func file_common_proto_init() {
 			}
 		}
 		file_common_proto_msgTypes[11].Exporter = func(v interface{}, i int) interface{} {
-			switch v := v.(*GetRankResult); i {
+			switch v := v.(*GetScoreRankResult); i {
 			case 0:
 				return &v.state
 			case 1:
@@ -1803,7 +1976,7 @@ func file_common_proto_init() {
 			}
 		}
 		file_common_proto_msgTypes[12].Exporter = func(v interface{}, i int) interface{} {
-			switch v := v.(*NotifyNewAudience); i {
+			switch v := v.(*GetWinningStreakRank); i {
 			case 0:
 				return &v.state
 			case 1:
@@ -1815,7 +1988,7 @@ func file_common_proto_init() {
 			}
 		}
 		file_common_proto_msgTypes[13].Exporter = func(v interface{}, i int) interface{} {
-			switch v := v.(*NotifyAudienceAction); i {
+			switch v := v.(*GetWinningStreakRankResult); i {
 			case 0:
 				return &v.state
 			case 1:
@@ -1827,7 +2000,7 @@ func file_common_proto_init() {
 			}
 		}
 		file_common_proto_msgTypes[14].Exporter = func(v interface{}, i int) interface{} {
-			switch v := v.(*ReportInfo); i {
+			switch v := v.(*NotifyNewAudience); i {
 			case 0:
 				return &v.state
 			case 1:
@@ -1839,7 +2012,7 @@ func file_common_proto_init() {
 			}
 		}
 		file_common_proto_msgTypes[15].Exporter = func(v interface{}, i int) interface{} {
-			switch v := v.(*Audience); i {
+			switch v := v.(*NotifyAudienceAction); i {
 			case 0:
 				return &v.state
 			case 1:
@@ -1851,7 +2024,7 @@ func file_common_proto_init() {
 			}
 		}
 		file_common_proto_msgTypes[16].Exporter = func(v interface{}, i int) interface{} {
-			switch v := v.(*AudienceBasic); i {
+			switch v := v.(*ReportInfo); i {
 			case 0:
 				return &v.state
 			case 1:
@@ -1863,7 +2036,7 @@ func file_common_proto_init() {
 			}
 		}
 		file_common_proto_msgTypes[17].Exporter = func(v interface{}, i int) interface{} {
-			switch v := v.(*AudienceInfo); i {
+			switch v := v.(*Audience); i {
 			case 0:
 				return &v.state
 			case 1:
@@ -1875,6 +2048,30 @@ func file_common_proto_init() {
 			}
 		}
 		file_common_proto_msgTypes[18].Exporter = func(v interface{}, i int) interface{} {
+			switch v := v.(*AudienceBasic); i {
+			case 0:
+				return &v.state
+			case 1:
+				return &v.sizeCache
+			case 2:
+				return &v.unknownFields
+			default:
+				return nil
+			}
+		}
+		file_common_proto_msgTypes[19].Exporter = func(v interface{}, i int) interface{} {
+			switch v := v.(*AudienceInfo); i {
+			case 0:
+				return &v.state
+			case 1:
+				return &v.sizeCache
+			case 2:
+				return &v.unknownFields
+			default:
+				return nil
+			}
+		}
+		file_common_proto_msgTypes[20].Exporter = func(v interface{}, i int) interface{} {
 			switch v := v.(*AudienceCustom); i {
 			case 0:
 				return &v.state
@@ -1893,7 +2090,7 @@ func file_common_proto_init() {
 			GoPackagePath: reflect.TypeOf(x{}).PkgPath(),
 			RawDescriptor: file_common_proto_rawDesc,
 			NumEnums:      0,
-			NumMessages:   21,
+			NumMessages:   23,
 			NumExtensions: 0,
 			NumServices:   0,
 		},

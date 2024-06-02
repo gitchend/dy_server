@@ -134,8 +134,9 @@ func GetAudienceInfo(appId string, openId string) *pb.AudienceInfo {
 	keyUserDataCustom := UserDataCustomKey(appId, openId)
 
 	cmdScore := pip.ZScore(ctx, keyScore, openId)
-	cmdRank := pip.ZRank(ctx, keyScore, openId)
-	cmdRankLast := pip.ZRank(ctx, keyScoreLast, openId)
+	cmdRank := pip.ZRevRank(ctx, keyScore, openId)
+	cmdRankLast := pip.ZRevRank(ctx, keyScoreLast, openId)
+	cmdRankWiningStreak := pip.ZRevRank(ctx, keyWiningStreak, openId)
 	cmdWiningStreak := pip.ZScore(ctx, keyWiningStreak, openId)
 	cmdUserDataCustom := pip.HGetAll(ctx, keyUserDataCustom)
 	_, _ = pip.Exec(ctx)
@@ -147,6 +148,9 @@ func GetAudienceInfo(appId string, openId string) *pb.AudienceInfo {
 	}
 	if result, err := cmdRankLast.Result(); err == nil {
 		ret.LastRank = int32(result) + 1
+	}
+	if result, err := cmdRankWiningStreak.Result(); err == nil {
+		ret.WinningStreakRank = int32(result) + 1
 	}
 	if result, err := cmdWiningStreak.Result(); err == nil {
 		ret.WinningStreak = int32(result)
@@ -191,12 +195,14 @@ func GetAudienceInfoList(appId string, openIdList []string) (ret []*pb.AudienceI
 	var cmdScoreList []*redis.FloatCmd
 	var cmdRankList []*redis.IntCmd
 	var cmdRankLastList []*redis.IntCmd
+	var cmdRankWiningStreakList []*redis.IntCmd
 	var cmdWiningStreakList []*redis.FloatCmd
 	var cmdUserDataCustomList []*redis.MapStringStringCmd
 	for _, openId := range openIdList {
 		cmdScoreList = append(cmdScoreList, pip.ZScore(ctx, keyScore, openId))
-		cmdRankList = append(cmdRankList, pip.ZRank(ctx, keyScore, openId))
-		cmdRankLastList = append(cmdRankLastList, pip.ZRank(ctx, keyScoreLast, openId))
+		cmdRankList = append(cmdRankList, pip.ZRevRank(ctx, keyScore, openId))
+		cmdRankLastList = append(cmdRankLastList, pip.ZRevRank(ctx, keyScoreLast, openId))
+		cmdRankWiningStreakList = append(cmdRankWiningStreakList, pip.ZRevRank(ctx, keyWiningStreak, openId))
 		cmdWiningStreakList = append(cmdWiningStreakList, pip.ZScore(ctx, keyWiningStreak, openId))
 		cmdUserDataCustomList = append(cmdUserDataCustomList, pip.HGetAll(ctx, UserDataKey(appId, openId)))
 	}
@@ -218,6 +224,9 @@ func GetAudienceInfoList(appId string, openIdList []string) (ret []*pb.AudienceI
 		}
 		if result, err := cmdRankLast.Result(); err == nil {
 			info.LastRank = int32(result) + 1
+		}
+		if result, err := cmdRankWiningStreakList[i].Result(); err == nil {
+			info.WinningStreakRank = int32(result) + 1
 		}
 		if result, err := cmdWiningStreak.Result(); err == nil {
 			info.WinningStreak = int32(result)
