@@ -34,9 +34,7 @@ func UpdateReport(appId string, report *pb.Report) error {
 	keyScore := ThisWeekScoreKey(appId)
 	keyWinningStreak := WinningStreakKey(appId)
 	for _, report := range report.Info {
-		if report.Score > 0 {
-			pip.ZIncrBy(ctx, keyScore, float64(report.Score), report.OpenId)
-		}
+		pip.ZIncrBy(ctx, keyScore, float64(report.Score), report.OpenId)
 		if report.IsWin {
 			pip.ZIncrBy(ctx, keyWinningStreak, 1, report.OpenId)
 		} else {
