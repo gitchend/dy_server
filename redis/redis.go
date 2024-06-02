@@ -140,6 +140,7 @@ func GetAudienceInfo(appId string, openId string) *pb.AudienceInfo {
 	cmdUserDataCustom := pip.HGetAll(ctx, keyUserDataCustom)
 	_, err := pip.Exec(ctx)
 	if err != nil {
+		fmt.Println("[GetAudienceInfo err]", err)
 		return ret
 	}
 	if result, err := cmdScore.Result(); err == nil {

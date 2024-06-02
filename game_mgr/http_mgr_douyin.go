@@ -107,8 +107,9 @@ func (s *HttpMgr) OnDouyinDataPush(c *gin.Context) {
 				AvatarUrl: data.AvatarUrl,
 			})
 			notifyData = append(notifyData, &pb.NotifyAudienceAction{
-				OpenId: data.SecOpenid,
-				GiftId: data.SecGiftID,
+				OpenId:  data.SecOpenid,
+				GiftId:  data.SecGiftID,
+				GiftNum: int32(data.GiftNum),
 			})
 		}
 	case "live_like":
