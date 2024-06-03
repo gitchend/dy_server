@@ -22,12 +22,16 @@ func WinningStreakKey(appId string) string {
 
 func ThisWeekScoreKey(appId string) string {
 	weekStart := getWeekStart(time.Now())
-	return fmt.Sprintf("Global_%s_Score_%d", appId, weekStart)
+	ret := fmt.Sprintf("Global_%s_Score_%d", appId, weekStart)
+	fmt.Println("ThisWeekScoreKey", ret)
+	return ret
 }
 
 func LastWeekScoreKey(appId string) string {
 	weekStart := getWeekStart(time.Now().Add(-time.Hour * 24 * 7))
-	return fmt.Sprintf("Global_%s_Score_%d", appId, weekStart)
+	ret := fmt.Sprintf("Global_%s_Score_%d", appId, weekStart)
+	fmt.Println("LastWeekScoreKey", ret)
+	return ret
 }
 
 func getWeekStart(now time.Time) int64 {
