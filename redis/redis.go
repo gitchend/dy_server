@@ -7,6 +7,7 @@ import (
 	"fmt"
 	"github.com/go-redis/redis/v8"
 	"os"
+	"strings"
 )
 
 var client *redis.Client
@@ -121,6 +122,7 @@ func SetAudienceBasic(appId string, data *pb.AudienceBasic) {
 	if data == nil {
 		return
 	}
+	data.AvatarUrl = strings.ReplaceAll(data.AvatarUrl, "\\u0026", "&")
 	jsonData, err := json.Marshal(data)
 	if err != nil {
 		return
