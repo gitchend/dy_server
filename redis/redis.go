@@ -42,7 +42,7 @@ func UpdateReport(appId string, report *pb.Report) error {
 		}
 		keyUserDataCustom := UserDataCustomKey(appId, report.OpenId)
 		for key, custom := range report.Custom {
-			if customData, err := json.Marshal(custom); err != nil {
+			if customData, err := json.Marshal(custom); err == nil {
 				pip.HSet(ctx, keyUserDataCustom, key, customData)
 			}
 		}
