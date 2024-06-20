@@ -107,8 +107,7 @@ func countSections(path string) uint16 {
 type nodeType uint8
 
 const (
-	static nodeType = iota
-	root
+	root nodeType = iota + 1
 	param
 	catchAll
 )
@@ -174,7 +173,6 @@ walk:
 			child := node{
 				path:      n.path[i:],
 				wildChild: n.wildChild,
-				nType:     static,
 				indices:   n.indices,
 				children:  n.children,
 				handlers:  n.handlers,
@@ -457,11 +455,11 @@ walk: // Outer loop for walking the tree
 
 				if !n.wildChild {
 					// If the path at the end of the loop is not equal to '/' and the current node has no child nodes
-					// the current node needs to roll back to last valid skippedNode
+					// the current node needs to roll back to last vaild skippedNode
 					if path != "/" {
-						for length := len(*skippedNodes); length > 0; length-- {
-							skippedNode := (*skippedNodes)[length-1]
-							*skippedNodes = (*skippedNodes)[:length-1]
+						for l := len(*skippedNodes); l > 0; {
+							skippedNode := (*skippedNodes)[l-1]
+							*skippedNodes = (*skippedNodes)[:l-1]
 							if strings.HasSuffix(skippedNode.path, path) {
 								path = skippedNode.path
 								n = skippedNode.node
@@ -574,11 +572,11 @@ walk: // Outer loop for walking the tree
 
 		if path == prefix {
 			// If the current path does not equal '/' and the node does not have a registered handle and the most recently matched node has a child node
-			// the current node needs to roll back to last valid skippedNode
+			// the current node needs to roll back to last vaild skippedNode
 			if n.handlers == nil && path != "/" {
-				for length := len(*skippedNodes); length > 0; length-- {
-					skippedNode := (*skippedNodes)[length-1]
-					*skippedNodes = (*skippedNodes)[:length-1]
+				for l := len(*skippedNodes); l > 0; {
+					skippedNode := (*skippedNodes)[l-1]
+					*skippedNodes = (*skippedNodes)[:l-1]
 					if strings.HasSuffix(skippedNode.path, path) {
 						path = skippedNode.path
 						n = skippedNode.node
@@ -606,11 +604,6 @@ walk: // Outer loop for walking the tree
 				return
 			}
 
-			if path == "/" && n.nType == static {
-				value.tsr = true
-				return
-			}
-
 			// No handle found. Check if a handle for this path + a
 			// trailing slash exists for trailing slash recommendation
 			for i, c := range []byte(n.indices) {
@@ -633,9 +626,9 @@ walk: // Outer loop for walking the tree
 
 		// roll back to last valid skippedNode
 		if !value.tsr && path != "/" {
-			for length := len(*skippedNodes); length > 0; length-- {
-				skippedNode := (*skippedNodes)[length-1]
-				*skippedNodes = (*skippedNodes)[:length-1]
+			for l := len(*skippedNodes); l > 0; {
+				skippedNode := (*skippedNodes)[l-1]
+				*skippedNodes = (*skippedNodes)[:l-1]
 				if strings.HasSuffix(skippedNode.path, path) {
 					path = skippedNode.path
 					n = skippedNode.node

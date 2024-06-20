@@ -9,6 +9,7 @@ import (
 	"errors"
 	"fmt"
 	"io"
+	"io/ioutil"
 	"log"
 	"net"
 	"net/http"
@@ -62,9 +63,7 @@ func CustomRecoveryWithWriter(out io.Writer, handle RecoveryFunc) HandlerFunc {
 				if ne, ok := err.(*net.OpError); ok {
 					var se *os.SyscallError
 					if errors.As(ne, &se) {
-						seStr := strings.ToLower(se.Error())
-						if strings.Contains(seStr, "broken pipe") ||
-							strings.Contains(seStr, "connection reset by peer") {
+						if strings.Contains(strings.ToLower(se.Error()), "broken pipe") || strings.Contains(strings.ToLower(se.Error()), "connection reset by peer") {
 							brokenPipe = true
 						}
 					}
@@ -92,7 +91,7 @@ func CustomRecoveryWithWriter(out io.Writer, handle RecoveryFunc) HandlerFunc {
 				}
 				if brokenPipe {
 					// If the connection is dead, we can't write a status to it.
-					c.Error(err.(error)) //nolint: errcheck
+					c.Error(err.(error)) // nolint: errcheck
 					c.Abort()
 				} else {
 					handle(c, err)
@@ -103,7 +102,7 @@ func CustomRecoveryWithWriter(out io.Writer, handle RecoveryFunc) HandlerFunc {
 	}
 }
 
-func defaultHandleRecovery(c *Context, _ any) {
+func defaultHandleRecovery(c *Context, err any) {
 	c.AbortWithStatus(http.StatusInternalServerError)
 }
 
@@ -122,7 +121,7 @@ func stack(skip int) []byte {
 		// Print this much at least.  If we can't find the source, it won't show.
 		fmt.Fprintf(buf, "%s:%d (0x%x)\n", file, line, pc)
 		if file != lastFile {
-			data, err := os.ReadFile(file)
+			data, err := ioutil.ReadFile(file)
 			if err != nil {
 				continue
 			}
@@ -164,7 +163,7 @@ func function(pc uintptr) []byte {
 	if period := bytes.Index(name, dot); period >= 0 {
 		name = name[period+1:]
 	}
-	name = bytes.ReplaceAll(name, centerDot, dot)
+	name = bytes.Replace(name, centerDot, dot, -1)
 	return name
 }
 

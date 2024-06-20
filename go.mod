@@ -1,14 +1,12 @@
 module app
 
-go 1.20
+go 1.17
 
 require (
-	github.com/gin-gonic/gin v1.9.1
+	github.com/gin-gonic/gin v1.8.1
+	github.com/go-redis/redis/v8 v8.11.5
 	github.com/gorilla/websocket v1.5.1
-	github.com/panjf2000/ants/v2 v2.5.0
-	github.com/redis/go-redis/v9 v9.5.1
 	github.com/sirupsen/logrus v1.9.3
-	go.uber.org/atomic v1.9.0
 	google.golang.org/protobuf v1.33.0
 )
 
@@ -37,6 +35,7 @@ require (
 	golang.org/x/net v0.17.0 // indirect
 	golang.org/x/sys v0.13.0 // indirect
 	golang.org/x/text v0.13.0 // indirect
+	gopkg.in/yaml.v2 v2.4.0 // indirect
 	gopkg.in/yaml.v3 v3.0.1 // indirect
 
 )

@@ -5,7 +5,7 @@ import (
 	"context"
 	"encoding/json"
 	"fmt"
-	"github.com/redis/go-redis/v9"
+	"github.com/go-redis/redis/v8"
 	"os"
 )
 
@@ -227,7 +227,7 @@ func GetAudienceInfoList(appId string, openIdList []string) (ret []*pb.AudienceI
 	var cmdRankLastList []*redis.IntCmd
 	var cmdRankWiningStreakList []*redis.IntCmd
 	var cmdWiningStreakList []*redis.FloatCmd
-	var cmdUserDataCustomList []*redis.MapStringStringCmd
+	var cmdUserDataCustomList []*redis.StringStringMapCmd
 	for _, openId := range openIdList {
 		cmdScoreList = append(cmdScoreList, pip.ZScore(ctx, keyScore, openId))
 		cmdRankList = append(cmdRankList, pip.ZRevRank(ctx, keyScore, openId))
