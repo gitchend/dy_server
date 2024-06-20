@@ -5,6 +5,11 @@ import (
 	"time"
 )
 
+const (
+	AudienceBasicTTL      = 24 * time.Hour
+	AudienceBasicTTLCheck = 1 * time.Hour
+)
+
 func PublishKey(appId string, roomId string) string {
 	return fmt.Sprintf("DataPush_%s_%s", appId, roomId)
 }
@@ -40,4 +45,12 @@ func getWeekStart(now time.Time) int64 {
 	startOfWeek := time.Date(now.Year(), now.Month(), now.Day(), 0, 0, 0, 0, now.Location())
 	startOfWeek = startOfWeek.AddDate(0, 0, int(-startOfWeek.Weekday()))
 	return startOfWeek.Unix()
+}
+
+func getWeekEnd(now time.Time) int64 {
+	gmtTimeLoc := time.FixedZone("UTC+8", 0)
+	now = now.In(gmtTimeLoc)
+	endOfWeek := time.Date(now.Year(), now.Month(), now.Day(), 0, 0, 0, 0, now.Location())
+	endOfWeek = endOfWeek.AddDate(0, 0, int(7-endOfWeek.Weekday()))
+	return endOfWeek.Unix()
 }

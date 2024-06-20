@@ -111,18 +111,21 @@ func SetAudienceBasic(appId string, data *pb.AudienceBasic) {
 	fmt.Println("[SetAudienceBasic]", data.OpenId, data)
 	ctx := context.Background()
 	key := UserDataKey(appId, data.OpenId)
-	exist, err := client.Exists(ctx, key).Result()
+	ttl, err := client.TTL(ctx, key).Result()
 	if err != nil {
 		return
 	}
-	if exist == 1 {
+	if ttl > AudienceBasicTTLCheck {
+		return
+	}
+	if data == nil {
 		return
 	}
 	jsonData, err := json.Marshal(data)
 	if err != nil {
 		return
 	}
-	cmd := client.Set(ctx, key, string(jsonData), -1)
+	cmd := client.Set(ctx, key, string(jsonData), AudienceBasicTTL)
 	fmt.Println("[SetAudienceBasic err]", cmd.Err())
 }
 
