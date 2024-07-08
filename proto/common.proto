@@ -64,7 +64,7 @@ message ReportResult
     repeated AudienceInfo Info   = 2;
 }
 
-//获取分数排行
+//获取周分数排行
 message GetScoreRank
 {
     int32 TopCount = 1;
@@ -76,13 +76,13 @@ message GetScoreRankResult
     repeated Audience Info   = 2;
 }
 
-//获取连胜排行
-message GetWinningStreakRank
+//获取月分数排行
+message GetMonthScoreRank
 {
     int32 TopCount = 1;
 }
 
-message GetWinningStreakRankResult
+message GetMonthScoreRankResult
 {
     ERROR_CODE        Result = 1;
     repeated Audience Info   = 2;
@@ -132,13 +132,13 @@ message AudienceBasic
 //观众详细信息
 message AudienceInfo
 {
-    string                      OpenId            = 1; //ID
-    int32                       Score             = 2; //总分
-    int32                       Rank              = 3; //当前赛季排名
-    int32                       LastRank          = 4; //上赛季排名
-    int32                       WinningStreakRank = 5; //连胜排名
-    int32                       WinningStreak     = 6; //连胜
-    map<string, AudienceCustom> Custom            = 7; //自定义信息
+    string                      OpenId        = 1; //ID
+    int32                       Score         = 2; //总分(周)
+    int32                       Rank          = 3; //排名(周)
+    int32                       MonthScore    = 4; //总分(月)
+    int32                       MonthRank     = 5; //排名(月)
+    int32                       WinningStreak = 6; //连胜
+    map<string, AudienceCustom> Custom        = 7; //自定义信息
 }
 
 //观众自定义信息

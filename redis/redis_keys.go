@@ -22,20 +22,23 @@ func UserDataCustomKey(appId string, openId string) string {
 }
 
 func WinningStreakKey(appId string) string {
-	return fmt.Sprintf("Global_%s_WinningStreak", appId)
-}
-
-func ThisWeekScoreKey(appId string) string {
-	weekStart := getWeekStart(time.Now())
-	ret := fmt.Sprintf("Global_%s_Score_%d", appId, weekStart)
-	fmt.Println("ThisWeekScoreKey", ret)
+	monthStart := getMonthStart(time.Now())
+	ret := fmt.Sprintf("Global_%s_WinningStreak_%d", appId, monthStart)
+	fmt.Println("WinningStreakKey", ret)
 	return ret
 }
 
-func LastWeekScoreKey(appId string) string {
-	weekStart := getWeekStart(time.Now().Add(-time.Hour * 24 * 7))
+func WeekScoreKey(appId string) string {
+	weekStart := getWeekStart(time.Now())
 	ret := fmt.Sprintf("Global_%s_Score_%d", appId, weekStart)
-	fmt.Println("LastWeekScoreKey", ret)
+	fmt.Println("WeekScoreKey", ret)
+	return ret
+}
+
+func MonthScoreKey(appId string) string {
+	monthStart := getMonthStart(time.Now())
+	ret := fmt.Sprintf("Global_%s_Month_Score_%d", appId, monthStart)
+	fmt.Println("MonthScoreKey", ret)
 	return ret
 }
 
@@ -47,10 +50,9 @@ func getWeekStart(now time.Time) int64 {
 	return startOfWeek.Unix()
 }
 
-func getWeekEnd(now time.Time) int64 {
+func getMonthStart(now time.Time) int64 {
 	gmtTimeLoc := time.FixedZone("UTC+8", 0)
 	now = now.In(gmtTimeLoc)
-	endOfWeek := time.Date(now.Year(), now.Month(), now.Day(), 0, 0, 0, 0, now.Location())
-	endOfWeek = endOfWeek.AddDate(0, 0, int(7-endOfWeek.Weekday()))
-	return endOfWeek.Unix()
+	startOfMonth := time.Date(now.Year(), now.Month(), 1, 0, 0, 0, 0, now.Location())
+	return startOfMonth.Unix()
 }

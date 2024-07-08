@@ -4,23 +4,23 @@ option  go_package = "pb/";
 
 enum MSG_TYPE
 {
-    _ERROR                      = 0;  //Error
-    _Login                      = 1;  //Login
-    _LoginResult                = 2;  //LoginResult
-    _PlayStart                  = 3;  //PlayStart
-    _PlayStartResult            = 4;  //PlayStartResult
-    _PlayEnd                    = 5;  //PlayEnd
-    _PlayEndResult              = 6;  //PlayEndResult
-    _Report                     = 7;  //Report
-    _ReportResult               = 8;  //ReportResult
-    _GetScoreRank               = 9;  //GetScoreRank
-    _GetScoreRankResult         = 10; //GetScoreRankResult
-    _GetWinningStreakRank       = 11; //GetWinningStreakRank
-    _GetWinningStreakRankResult = 12; //GetWinningStreakRankResult
-    _NotifyNewAudience          = 13; //NotifyNewAudience
-    _NotifyAudienceAction       = 14; //NotifyAudienceAction
-    _Ping                       = 15; //Ping
-    _Pong                       = 16; //Pong
+    _ERROR                   = 0;   //Error
+    _Login                   = 1;   //Login
+    _LoginResult             = 2;   //LoginResult
+    _Ping                    = 3;   //Ping
+    _Pong                    = 4;   //Pong
+    _PlayStart               = 101; //PlayStart
+    _PlayStartResult         = 102; //PlayStartResult
+    _PlayEnd                 = 103; //PlayEnd
+    _PlayEndResult           = 104; //PlayEndResult
+    _Report                  = 105; //Report
+    _ReportResult            = 106; //ReportResult
+    _GetScoreRank            = 201; //GetScoreRank
+    _GetScoreRankResult      = 202; //GetScoreRankResult
+    _GetMonthScoreRank       = 203; //GetMonthScoreRank
+    _GetMonthScoreRankResult = 204; //GetMonthScoreRankResult
+    _NotifyNewAudience       = 301; //NotifyNewAudience
+    _NotifyAudienceAction    = 302; //NotifyAudienceAction
 }
 
 enum ERROR_CODE
