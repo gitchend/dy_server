@@ -32,9 +32,11 @@ func UpdateReport(appId string, report *pb.Report) error {
 	ctx := context.Background()
 	pip := client.Pipeline()
 	keyScore := WeekScoreKey(appId)
+	keyScoreMonth := MonthScoreKey(appId)
 	keyWinningStreak := WinningStreakKey(appId)
 	for _, report := range report.Info {
 		pip.ZIncrBy(ctx, keyScore, float64(report.Score), report.OpenId)
+		pip.ZIncrBy(ctx, keyScoreMonth, float64(report.Score), report.OpenId)
 		if report.IsWin {
 			pip.ZIncrBy(ctx, keyWinningStreak, 1, report.OpenId)
 		} else {
