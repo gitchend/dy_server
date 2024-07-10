@@ -35,8 +35,22 @@ func WeekScoreKey(appId string) string {
 	return ret
 }
 
+func LastWeekScoreKey(appId string) string {
+	weekStart := getWeekStart(time.Now().Add(-time.Hour * 24 * 7))
+	ret := fmt.Sprintf("Global_%s_Score_%d", appId, weekStart)
+	fmt.Println("LastWeekScoreKey", ret)
+	return ret
+}
+
 func MonthScoreKey(appId string) string {
 	monthStart := getMonthStart(time.Now())
+	ret := fmt.Sprintf("Global_%s_Month_Score_%d", appId, monthStart)
+	fmt.Println("MonthScoreKey", ret)
+	return ret
+}
+
+func LastMonthScoreKey(appId string) string {
+	monthStart := getLastMonthStart(time.Now())
 	ret := fmt.Sprintf("Global_%s_Month_Score_%d", appId, monthStart)
 	fmt.Println("MonthScoreKey", ret)
 	return ret
@@ -54,5 +68,20 @@ func getMonthStart(now time.Time) int64 {
 	gmtTimeLoc := time.FixedZone("UTC+8", 0)
 	now = now.In(gmtTimeLoc)
 	startOfMonth := time.Date(now.Year(), now.Month(), 1, 0, 0, 0, 0, now.Location())
+	return startOfMonth.Unix()
+}
+
+func getLastMonthStart(now time.Time) int64 {
+	gmtTimeLoc := time.FixedZone("UTC+8", 0)
+	now = now.In(gmtTimeLoc)
+	year := now.Year()
+	month := now.Month()
+	if month == 1 {
+		year = year - 1
+		month = 12
+	} else {
+		month = month - 1
+	}
+	startOfMonth := time.Date(year, month, 1, 0, 0, 0, 0, now.Location())
 	return startOfMonth.Unix()
 }

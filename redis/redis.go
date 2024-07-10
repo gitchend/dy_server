@@ -161,14 +161,18 @@ func GetAudienceInfo(appId string, openId string) *pb.AudienceInfo {
 	}
 	pip := client.Pipeline()
 	keyScore := WeekScoreKey(appId)
+	keyScoreLast := LastWeekScoreKey(appId)
 	keyScoreMonth := MonthScoreKey(appId)
+	keyScoreLastMonth := LastMonthScoreKey(appId)
 	keyWiningStreak := WinningStreakKey(appId)
 	keyUserDataCustom := UserDataCustomKey(appId, openId)
 
 	cmdScore := pip.ZScore(ctx, keyScore, openId)
 	cmdRank := pip.ZRevRank(ctx, keyScore, openId)
+	cmdLastRank := pip.ZRevRank(ctx, keyScoreLast, openId)
 	cmdScoreMonth := pip.ZScore(ctx, keyScoreMonth, openId)
 	cmdRankMonth := pip.ZRevRank(ctx, keyScoreMonth, openId)
+	cmdLastRankMonth := pip.ZRevRank(ctx, keyScoreLastMonth, openId)
 	cmdWiningStreak := pip.ZScore(ctx, keyWiningStreak, openId)
 	cmdUserDataCustom := pip.HGetAll(ctx, keyUserDataCustom)
 	_, _ = pip.Exec(ctx)
@@ -178,11 +182,17 @@ func GetAudienceInfo(appId string, openId string) *pb.AudienceInfo {
 	if result, err := cmdRank.Result(); err == nil {
 		ret.Rank = int32(result) + 1
 	}
+	if result, err := cmdLastRank.Result(); err == nil {
+		ret.LastRank = int32(result) + 1
+	}
 	if result, err := cmdScoreMonth.Result(); err == nil {
 		ret.MonthScore = int32(result)
 	}
 	if result, err := cmdRankMonth.Result(); err == nil {
 		ret.MonthRank = int32(result) + 1
+	}
+	if result, err := cmdLastRankMonth.Result(); err == nil {
+		ret.LastMonthRank = int32(result) + 1
 	}
 	if result, err := cmdWiningStreak.Result(); err == nil {
 		ret.WinningStreak = int32(result)
@@ -221,20 +231,26 @@ func GetAudienceInfoList(appId string, openIdList []string) (ret []*pb.AudienceI
 	ctx := context.Background()
 	pip := client.Pipeline()
 	keyScore := WeekScoreKey(appId)
+	keyScoreLast := LastWeekScoreKey(appId)
 	keyScoreMonth := MonthScoreKey(appId)
+	keyScoreLastMonth := LastMonthScoreKey(appId)
 	keyWiningStreak := WinningStreakKey(appId)
 
 	var cmdScoreList []*redis.FloatCmd
 	var cmdRankList []*redis.IntCmd
+	var cmdRankLastList []*redis.IntCmd
 	var cmdScoreMonthList []*redis.FloatCmd
 	var cmdRankMonthList []*redis.IntCmd
+	var cmdRankLastMonthList []*redis.IntCmd
 	var cmdWiningStreakList []*redis.FloatCmd
 	var cmdUserDataCustomList []*redis.StringStringMapCmd
 	for _, openId := range openIdList {
 		cmdScoreList = append(cmdScoreList, pip.ZScore(ctx, keyScore, openId))
 		cmdRankList = append(cmdRankList, pip.ZRevRank(ctx, keyScore, openId))
+		cmdRankLastList = append(cmdRankLastList, pip.ZRevRank(ctx, keyScoreLast, openId))
 		cmdScoreMonthList = append(cmdScoreMonthList, pip.ZScore(ctx, keyScoreMonth, openId))
 		cmdRankMonthList = append(cmdRankMonthList, pip.ZRevRank(ctx, keyScoreMonth, openId))
+		cmdRankLastMonthList = append(cmdRankLastMonthList, pip.ZRevRank(ctx, keyScoreLastMonth, openId))
 		cmdWiningStreakList = append(cmdWiningStreakList, pip.ZScore(ctx, keyWiningStreak, openId))
 		cmdUserDataCustomList = append(cmdUserDataCustomList, pip.HGetAll(ctx, UserDataKey(appId, openId)))
 	}
@@ -242,8 +258,10 @@ func GetAudienceInfoList(appId string, openIdList []string) (ret []*pb.AudienceI
 	for i, openId := range openIdList {
 		cmdScore := cmdScoreList[i]
 		cmdRank := cmdRankList[i]
+		cmdRankLast := cmdRankLastList[i]
 		cmdScoreMonth := cmdScoreMonthList[i]
 		cmdRankMonth := cmdRankMonthList[i]
+		cmdRankLastMonth := cmdRankLastMonthList[i]
 		cmdWiningStreak := cmdWiningStreakList[i]
 		info := &pb.AudienceInfo{
 			OpenId: openId,
@@ -255,11 +273,17 @@ func GetAudienceInfoList(appId string, openIdList []string) (ret []*pb.AudienceI
 		if result, err := cmdRank.Result(); err == nil {
 			info.Rank = int32(result) + 1
 		}
+		if result, err := cmdRankLast.Result(); err == nil {
+			info.LastRank = int32(result) + 1
+		}
 		if result, err := cmdScoreMonth.Result(); err == nil {
 			info.MonthScore = int32(result)
 		}
 		if result, err := cmdRankMonth.Result(); err == nil {
 			info.MonthRank = int32(result) + 1
+		}
+		if result, err := cmdRankLastMonth.Result(); err == nil {
+			info.LastMonthRank = int32(result) + 1
 		}
 		if result, err := cmdWiningStreak.Result(); err == nil {
 			info.WinningStreak = int32(result)

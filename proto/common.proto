@@ -135,10 +135,12 @@ message AudienceInfo
     string                      OpenId        = 1; //ID
     int32                       Score         = 2; //总分(周)
     int32                       Rank          = 3; //排名(周)
-    int32                       MonthScore    = 4; //总分(月)
-    int32                       MonthRank     = 5; //排名(月)
-    int32                       WinningStreak = 6; //连胜
-    map<string, AudienceCustom> Custom        = 7; //自定义信息
+    int32                       LastRank      = 4; //上次排名(周)
+    int32                       MonthScore    = 5; //总分(月)
+    int32                       MonthRank     = 6; //排名(月)
+    int32                       LastMonthRank = 7; //上次排名(月)
+    int32                       WinningStreak = 8; //连胜
+    map<string, AudienceCustom> Custom        = 9; //自定义信息
 }
 
 //观众自定义信息
