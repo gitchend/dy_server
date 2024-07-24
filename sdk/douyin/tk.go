@@ -1,20 +1,16 @@
 package douyin
 
 import (
+	"app/redis"
 	"bytes"
 	"encoding/json"
 	"errors"
 	"fmt"
 	"io/ioutil"
 	"net/http"
-	"sync"
-	"time"
-
-	log "github.com/sirupsen/logrus"
 )
 
 type IApp interface {
-	StartRefreshToken()
 	GetRoomId(token string) (string, string, string, error)
 	StartTask(roomid string, msg_type string) (string, error)
 	StopTask(roomid string, msg_type string) (string, error)
@@ -28,33 +24,8 @@ func NewApp(appid, secret string) IApp {
 }
 
 type App struct {
-	appid             string
-	secret            string
-	accessToken       string
-	refreshTokenChan  chan string
-	refreshTokenMutex sync.Mutex
-}
-
-func (s *App) StartRefreshToken() {
-	go func() {
-		s.refreshTokenChan = make(chan string, 1)
-		for {
-			var err error
-			s.accessToken, err = s.getAccessToken()
-			if err != nil {
-				// handle error
-				log.Errorf("Failed to refresh access token: %v", err)
-			}
-			select {
-			case m := <-s.refreshTokenChan:
-				log.Info(m)
-			// Timeout
-			case <-time.After(time.Hour): //
-				log.Info("RefreshToken after a hour")
-			}
-
-		}
-	}()
+	appid  string
+	secret string
 }
 
 func (s *App) StartTask(roomid string, msg_type string) (string, error) {
@@ -72,7 +43,7 @@ func (s *App) StartTask(roomid string, msg_type string) (string, error) {
 	if err != nil {
 		return "", err
 	}
-	req.Header.Set("access-token", s.accessToken)
+	req.Header.Set("access-token", s.GetAccessToken())
 	req.Header.Set("content-type", "application/json")
 	client := &http.Client{}
 	resp, err := client.Do(req)
@@ -90,9 +61,6 @@ func (s *App) StartTask(roomid string, msg_type string) (string, error) {
 		return "", err
 	}
 	if result["err_no"].(float64) != 0 {
-		if int64(result["err_no"].(float64)) == 40022 {
-			s.needRefreshToken(fmt.Sprintf("RefreshToken:SdkStartTask%f%v", result["err_no"].(float64), result["err_msg"].(string)))
-		}
 		return "", errors.New(result["err_msg"].(string))
 	}
 	return result["data"].(map[string]interface{})["task_id"].(string), nil
@@ -113,7 +81,7 @@ func (s *App) StopTask(roomid string, msg_type string) (string, error) {
 	if err != nil {
 		return "", err
 	}
-	req.Header.Set("access-token", s.accessToken)
+	req.Header.Set("access-token", s.GetAccessToken())
 	req.Header.Set("content-type", "application/json")
 	client := &http.Client{}
 	resp, err := client.Do(req)
@@ -131,9 +99,6 @@ func (s *App) StopTask(roomid string, msg_type string) (string, error) {
 		return "", err
 	}
 	if result["err_no"].(float64) != 0 {
-		if int64(result["err_no"].(float64)) == 40022 {
-			s.needRefreshToken(fmt.Sprintf("RefreshToken:SdkStopTask%f%v", result["err_no"].(float64), result["err_msg"].(string)))
-		}
 		return "", errors.New(result["err_msg"].(string))
 	}
 	return "", nil
@@ -154,7 +119,7 @@ func (s *App) SendGiftPostRequest(roomid string, appid string, sec_gift_id_list 
 	if err != nil {
 		return nil, err
 	}
-	req.Header.Set("x-token", s.accessToken)
+	req.Header.Set("x-token", s.GetAccessToken())
 	req.Header.Set("content-type", "application/json")
 	client := &http.Client{}
 	resp, err := client.Do(req)
@@ -173,9 +138,6 @@ func (s *App) SendGiftPostRequest(roomid string, appid string, sec_gift_id_list 
 	}
 	if errcode, ok := result["errcode"]; ok {
 		if errcode.(float64) != 0 {
-			if int64(errcode.(float64)) == 40022 {
-				s.needRefreshToken(fmt.Sprintf("RefreshToken:SendGiftPostRequest%f%v", result["errcode"].(float64), result["err_msg"].(string)))
-			}
 			return nil, errors.New(result["errmsg"].(string))
 		}
 	}
@@ -201,7 +163,7 @@ func (s *App) GetRoomId(token string) (string, string, string, error) {
 	if err != nil {
 		return "", "", "", err
 	}
-	req.Header.Set("X-Token", s.accessToken)
+	req.Header.Set("X-Token", s.GetAccessToken())
 	req.Header.Set("Content-Type", "application/json")
 	client := &http.Client{}
 	resp, err := client.Do(req)
@@ -229,9 +191,6 @@ func (s *App) GetRoomId(token string) (string, string, string, error) {
 		return "", "", "", err
 	}
 	if result.ErrCode != 0 {
-		if result.ErrCode == 40022 {
-			s.needRefreshToken(fmt.Sprintf("RefreshToken:GetRoomId%d%s", result.ErrCode, result.ErrMsg))
-		}
 		return "", "", "", errors.New(result.ErrMsg)
 	}
 	if result.Data.Info.RoomId == "" {
@@ -244,16 +203,11 @@ func (s *App) GetRoomId(token string) (string, string, string, error) {
 	return roomId, uid, nickname, nil
 }
 
-func (s *App) needRefreshToken(reason string) {
-	s.refreshTokenMutex.Lock()
-	defer s.refreshTokenMutex.Unlock()
-	if len(s.refreshTokenChan) == 0 {
-		s.refreshTokenChan <- reason
+func (s *App) GetAccessToken() string {
+	accessToken, err := redis.GetAccessToken(s.appid)
+	if err == nil && accessToken != "" {
+		return accessToken
 	}
-}
-
-// 新建一个golang func，参数appid secret grant_type  发送以json格式http请求返回asccess_token
-func (s *App) getAccessToken() (string, error) {
 	url := "https://developer.toutiao.com/api/apps/v2/token"
 	data := map[string]string{
 		"appid":      s.appid,
@@ -262,29 +216,35 @@ func (s *App) getAccessToken() (string, error) {
 	}
 	jsonData, err := json.Marshal(data)
 	if err != nil {
-		return "", err
+		fmt.Println("[GetAccessToken]", err)
+		return ""
 	}
 	resp, err := http.Post(url, "application/json", bytes.NewBuffer(jsonData))
 	if err != nil {
-		return "", err
+		fmt.Println("[GetAccessToken]", err)
+		return ""
 	}
 	defer resp.Body.Close()
 	body, err := ioutil.ReadAll(resp.Body)
 	if err != nil {
-		return "", err
+		fmt.Println("[GetAccessToken]", err)
+		return ""
 	}
 	var result map[string]interface{}
 	err = json.Unmarshal(body, &result)
 	if err != nil {
-		return "", err
+		fmt.Println("[GetAccessToken]", err)
+		return ""
 	}
 	if result["err_no"].(float64) != 0 {
-		return "", errors.New(result["err_tips"].(string))
+		fmt.Println("[GetAccessToken]", errors.New(result["err_tips"].(string)))
+		return ""
 	}
-	s.accessToken = result["data"].(map[string]interface{})["access_token"].(string)
-	return s.accessToken, nil
-}
-
-func (s *App) GetAccessToken() string {
-	return s.accessToken
+	accessToken = result["data"].(map[string]interface{})["access_token"].(string)
+	err = redis.SetAccessToken(s.appid, accessToken)
+	if err != nil {
+		fmt.Println("[GetAccessToken]", err)
+		return ""
+	}
+	return accessToken
 }

@@ -8,7 +8,12 @@ import (
 const (
 	AudienceBasicTTL      = 24 * time.Hour
 	AudienceBasicTTLCheck = 1 * time.Hour
+	AccessTokenTTL        = 100 * time.Minute
 )
+
+func AccessTokenKey(appId string) string {
+	return fmt.Sprintf("AccessToken_%s", appId)
+}
 
 func PublishKey(appId string, roomId string) string {
 	return fmt.Sprintf("DataPush_%s_%s", appId, roomId)

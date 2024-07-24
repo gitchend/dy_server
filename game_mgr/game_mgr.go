@@ -28,11 +28,10 @@ func (s *GameMgr) Run() error {
 	message.InitMessageParser("message", "MSG_TYPE")
 	redis.Init()
 
-	//for appId, appSecret := range APP_TOKEN_MAP {
-	//	newApp := douyin.NewApp(appId, appSecret)
-	//	s.appMap[appId] = newApp
-	//	newApp.StartRefreshToken()
-	//}
+	for appId, appSecret := range APP_TOKEN_MAP {
+		newApp := douyin.NewApp(appId, appSecret)
+		s.appMap[appId] = newApp
+	}
 
 	return s.httpMgr.Run()
 }

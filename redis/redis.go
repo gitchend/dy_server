@@ -28,6 +28,18 @@ func Init() {
 	}
 }
 
+func GetAccessToken(appId string) (string, error) {
+	ctx := context.Background()
+	key := AccessTokenKey(appId)
+	return client.Get(ctx, key).Result()
+}
+
+func SetAccessToken(appId string, accessToken string) error {
+	ctx := context.Background()
+	key := AccessTokenKey(appId)
+	return client.Set(ctx, key, accessToken, AccessTokenTTL).Err()
+}
+
 func UpdateReport(appId string, report *pb.Report) error {
 	ctx := context.Background()
 	pip := client.Pipeline()

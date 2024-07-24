@@ -31,27 +31,27 @@ func (s *HttpMgr) OnDouyinDataPush(c *gin.Context) {
 		return
 	}()
 	appId := c.Param("appId")
-	appSecret, ok := APP_TOKEN_MAP[appId]
-	if !ok {
-		return
-	}
+	//appSecret, ok := APP_TOKEN_MAP[appId]
+	//if !ok {
+	//	return
+	//}
 	roomId := c.GetHeader("x-roomid")
 	msgType := c.GetHeader("x-msg-type")
-	headerCheck := map[string]string{
-		"x-nonce-str": c.GetHeader("x-nonce-str"),
-		"x-timestamp": c.GetHeader("x-timestamp"),
-		"x-msg-type":  msgType,
-		"x-roomid":    roomId,
-	}
+	//headerCheck := map[string]string{
+	//	"x-nonce-str": c.GetHeader("x-nonce-str"),
+	//	"x-timestamp": c.GetHeader("x-timestamp"),
+	//	"x-msg-type":  msgType,
+	//	"x-roomid":    roomId,
+	//}
 	bodyData, err := io.ReadAll(c.Request.Body)
 	if err != nil {
 		return
 	}
-	signatureRemote := c.GetHeader("x-signature")
-	signatureLocal := signature(headerCheck, string(bodyData), appSecret)
-	if false && signatureRemote != signatureLocal {
-		return
-	}
+	//signatureRemote := c.GetHeader("x-signature")
+	//signatureLocal := signature(headerCheck, string(bodyData), appSecret)
+	//if  signatureRemote != signatureLocal {
+	//	return
+	//}
 
 	var audienceData []*pb.AudienceBasic
 	var notifyData []*pb.NotifyAudienceAction
