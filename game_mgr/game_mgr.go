@@ -28,6 +28,7 @@ func NewGameMgr() *GameMgr {
 		err := json.Unmarshal([]byte(appInfo), &appInfoMap)
 		if err == nil {
 			for appId, appSecret := range appInfoMap {
+				fmt.Println("[APP_INFO]", appId)
 				APP_TOKEN_MAP[appId] = appSecret
 			}
 		}

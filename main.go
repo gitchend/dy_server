@@ -6,7 +6,7 @@ import (
 )
 
 func main() {
-	fmt.Println("server start")
+	fmt.Println("[Server Start]")
 	mgr := game_mgr.NewGameMgr()
 	err := mgr.Run()
 	if err != nil {
