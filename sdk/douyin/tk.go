@@ -232,34 +232,34 @@ func (s *App) GetAccessToken() string {
 	}
 	jsonData, err := json.Marshal(data)
 	if err != nil {
-		fmt.Println("[GetAccessToken]", err)
+		fmt.Println("[GetAccessToken err1]", err)
 		return ""
 	}
 	resp, err := http.Post(url, "application/json", bytes.NewBuffer(jsonData))
 	if err != nil {
-		fmt.Println("[GetAccessToken]", err)
+		fmt.Println("[GetAccessToken err2]", err)
 		return ""
 	}
 	defer resp.Body.Close()
 	body, err := ioutil.ReadAll(resp.Body)
 	if err != nil {
-		fmt.Println("[GetAccessToken]", err)
+		fmt.Println("[GetAccessToken err3]", err)
 		return ""
 	}
 	var result map[string]interface{}
 	err = json.Unmarshal(body, &result)
 	if err != nil {
-		fmt.Println("[GetAccessToken]", err)
+		fmt.Println("[GetAccessToken err4]", err)
 		return ""
 	}
 	if result["err_no"].(float64) != 0 {
-		fmt.Println("[GetAccessToken]", errors.New(result["err_tips"].(string)))
+		fmt.Println("[GetAccessToken err5]", errors.New(result["err_tips"].(string)))
 		return ""
 	}
 	accessToken = result["data"].(map[string]interface{})["access_token"].(string)
 	err = redis.SetAccessToken(s.appid, accessToken)
 	if err != nil {
-		fmt.Println("[GetAccessToken]", err)
+		fmt.Println("[GetAccessToken err6]", err)
 		return ""
 	}
 	return accessToken
