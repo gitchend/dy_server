@@ -60,6 +60,7 @@ func (s *GameMgr) SdkLogin(appId string, token string) (string, string, string, 
 	}
 	roomId, uid, nickName, err := app.GetRoomId(token)
 	if err != nil {
+		fmt.Println("[SdkLogin err]", appId, token, err)
 		return "", "", "", pb.ERROR_CODE_INVALID_TOKEN
 	}
 	return roomId, uid, nickName, pb.ERROR_CODE_SUCCESS
@@ -73,7 +74,7 @@ func (s *GameMgr) SdkStartTask(appId string, roomId string, msgType string) pb.E
 
 	_, err := app.StartTask(roomId, msgType)
 	if err != nil {
-		fmt.Println("[StartTask err]", appId, roomId, msgType, err)
+		fmt.Println("[SdkStartTask err]", appId, roomId, msgType, err)
 		return pb.ERROR_CODE_FAIL
 	}
 	return pb.ERROR_CODE_SUCCESS
@@ -87,7 +88,7 @@ func (s *GameMgr) SdkStopTask(appId string, roomId string, msgType string) pb.ER
 
 	_, err := app.StopTask(roomId, msgType)
 	if err != nil {
-		fmt.Println("[StopTask err]", appId, roomId, msgType, err)
+		fmt.Println("[SdkStopTask err]", appId, roomId, msgType, err)
 		return pb.ERROR_CODE_FAIL
 	}
 	return pb.ERROR_CODE_SUCCESS
