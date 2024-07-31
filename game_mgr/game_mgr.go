@@ -7,6 +7,8 @@ import (
 	"app/message/pb"
 	"app/redis"
 	"app/sdk/douyin"
+	"encoding/json"
+	"os"
 )
 
 var APP_TOKEN_MAP = map[string]string{
@@ -19,6 +21,16 @@ type GameMgr struct {
 }
 
 func NewGameMgr() *GameMgr {
+	appInfo := os.Getenv("APP_INFO")
+	if appInfo != "" {
+		appInfoMap := make(map[string]string)
+		err := json.Unmarshal([]byte(appInfo), &appInfoMap)
+		if err == nil {
+			for appId, appSecret := range appInfoMap {
+				APP_TOKEN_MAP[appId] = appSecret
+			}
+		}
+	}
 	return &GameMgr{}
 }
 func (s *GameMgr) Run() error {

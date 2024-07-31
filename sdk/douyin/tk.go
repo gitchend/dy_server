@@ -177,29 +177,45 @@ func (s *App) GetRoomId(token string) (string, string, string, error) {
 	}
 	var result = &struct {
 		Data struct {
+			AckCfg []struct {
+				AckType       int    `json:"ack_type"`
+				BatchInterval int    `json:"batch_interval"`
+				BatchMaxNum   int    `json:"batch_max_num"`
+				MsgType       string `json:"msg_type"`
+			} `json:"ack_cfg"`
 			Info struct {
-				RoomId   string `json:"room_id"`
-				Uid      string `json:"anchor_open_id"`
-				Nickname string `json:"nick_name"`
+				AnchorOpenID string `json:"anchor_open_id"`
+				AvatarURL    string `json:"avatar_url"`
+				NickName     string `json:"nick_name"`
+				RoomID       int64  `json:"room_id"`
 			} `json:"info"`
+			LinkerInfo struct {
+				LinkerID     int `json:"linker_id"`
+				LinkerStatus int `json:"linker_status"`
+				MasterStatus int `json:"master_status"`
+			} `json:"linker_info"`
 		} `json:"data"`
-		ErrCode int64  `json:"errcode"`
-		ErrMsg  string `json:"errmsg"`
+		ErrCode int `json:"errcode"`
+		Extra   struct {
+			Now int64 `json:"now"`
+		} `json:"extra"`
+		StatusCode int `json:"status_code"`
 	}{}
+
 	err = json.Unmarshal(body, result)
 	if err != nil {
 		return "", "", "", err
 	}
 	if result.ErrCode != 0 {
-		return "", "", "", errors.New(result.ErrMsg)
+		return "", "", "", errors.New(fmt.Sprintf("error code: %d", result.ErrCode))
 	}
-	if result.Data.Info.RoomId == "" {
+	if result.Data.Info.RoomID == 0 {
 		return "", "", "", errors.New("no data in response")
 	}
 
-	roomId := result.Data.Info.RoomId
-	uid := result.Data.Info.Uid
-	nickname := result.Data.Info.Nickname
+	roomId := fmt.Sprintf("%d", result.Data.Info.RoomID)
+	uid := fmt.Sprintf("%d", result.Data.Info.RoomID)
+	nickname := result.Data.Info.NickName
 	return roomId, uid, nickname, nil
 }
 
