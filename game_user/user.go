@@ -209,20 +209,18 @@ func (s *GameUser) OnGetMonthScoreRank(msg *pb.GetMonthScoreRank) {
 
 func (s *GameUser) setPushActive(isActive bool) {
 	if isActive {
-		s.Log("SetPushActive1", s.appId)
-		s.Log("SetPushActive2", s.roomId)
 		redis.Subscribe(s.appId, s.roomId, s.OnRecvPush, s.pushCloseChan)
 		if !s.isDebug {
-			s.mgr.SdkStartTask(s.appId, s.roomId, "1")
-			s.mgr.SdkStartTask(s.appId, s.roomId, "2")
-			s.mgr.SdkStartTask(s.appId, s.roomId, "3")
+			s.mgr.SdkStartTask(s.appId, s.roomId, "live_comment")
+			s.mgr.SdkStartTask(s.appId, s.roomId, "live_gift")
+			s.mgr.SdkStartTask(s.appId, s.roomId, "live_like")
 		}
 	} else {
 		s.pushCloseChan <- struct{}{}
 		if !s.isDebug {
-			s.mgr.SdkStopTask(s.appId, s.roomId, "1")
-			s.mgr.SdkStopTask(s.appId, s.roomId, "2")
-			s.mgr.SdkStopTask(s.appId, s.roomId, "3")
+			s.mgr.SdkStopTask(s.appId, s.roomId, "live_comment")
+			s.mgr.SdkStopTask(s.appId, s.roomId, "live_gift")
+			s.mgr.SdkStopTask(s.appId, s.roomId, "live_like")
 		}
 	}
 }
