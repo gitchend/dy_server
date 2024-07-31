@@ -29,7 +29,7 @@ type App struct {
 }
 
 func (s *App) StartTask(roomid string, msg_type string) (string, error) {
-	url := "https://webcast.bytedance.com/api/live_data/task/start"
+	url := "http://webcast.bytedance.com/api/live_data/task/start"
 	data := map[string]string{
 		"roomid":   roomid,
 		"appid":    s.appid,
@@ -67,7 +67,7 @@ func (s *App) StartTask(roomid string, msg_type string) (string, error) {
 }
 
 func (s *App) StopTask(roomid string, msg_type string) (string, error) {
-	url := "https://webcast.bytedance.com/api/live_data/task/stop"
+	url := "http://webcast.bytedance.com/api/live_data/task/stop"
 	data := map[string]string{
 		"roomid":   roomid,
 		"appid":    s.appid,
@@ -105,7 +105,7 @@ func (s *App) StopTask(roomid string, msg_type string) (string, error) {
 }
 
 func (s *App) SendGiftPostRequest(roomid string, appid string, sec_gift_id_list []string) ([]string, error) {
-	url := "https://webcast.bytedance.com/api/gift/top_gift"
+	url := "http://webcast.bytedance.com/api/gift/top_gift"
 	data := map[string]interface{}{
 		"room_id":          roomid,
 		"app_id":           appid,
@@ -224,7 +224,7 @@ func (s *App) GetAccessToken() string {
 	if err == nil && accessToken != "" {
 		return accessToken
 	}
-	url := "https://developer.toutiao.com/api/apps/v2/token"
+	url := "http://developer.toutiao.com/api/apps/v2/token"
 	data := map[string]string{
 		"appid":      s.appid,
 		"secret":     s.secret,
