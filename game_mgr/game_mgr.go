@@ -8,6 +8,7 @@ import (
 	"app/redis"
 	"app/sdk/douyin"
 	"encoding/json"
+	"fmt"
 	"os"
 )
 
@@ -72,6 +73,7 @@ func (s *GameMgr) SdkStartTask(appId string, roomId string, msgType string) pb.E
 
 	_, err := app.StartTask(roomId, msgType)
 	if err != nil {
+		fmt.Println("[StartTask err]", appId, roomId, msgType, err)
 		return pb.ERROR_CODE_FAIL
 	}
 	return pb.ERROR_CODE_SUCCESS
@@ -85,6 +87,7 @@ func (s *GameMgr) SdkStopTask(appId string, roomId string, msgType string) pb.ER
 
 	_, err := app.StopTask(roomId, msgType)
 	if err != nil {
+		fmt.Println("[StopTask err]", appId, roomId, msgType, err)
 		return pb.ERROR_CODE_FAIL
 	}
 	return pb.ERROR_CODE_SUCCESS
