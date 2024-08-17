@@ -264,7 +264,7 @@ func GetAudienceInfoList(appId string, openIdList []string) (ret []*pb.AudienceI
 		cmdRankMonthList = append(cmdRankMonthList, pip.ZRevRank(ctx, keyScoreMonth, openId))
 		cmdRankLastMonthList = append(cmdRankLastMonthList, pip.ZRevRank(ctx, keyScoreLastMonth, openId))
 		cmdWiningStreakList = append(cmdWiningStreakList, pip.ZScore(ctx, keyWiningStreak, openId))
-		cmdUserDataCustomList = append(cmdUserDataCustomList, pip.HGetAll(ctx, UserDataKey(appId, openId)))
+		cmdUserDataCustomList = append(cmdUserDataCustomList, pip.HGetAll(ctx, UserDataCustomKey(appId, openId)))
 	}
 	_, _ = pip.Exec(ctx)
 	for i, openId := range openIdList {
@@ -275,6 +275,7 @@ func GetAudienceInfoList(appId string, openIdList []string) (ret []*pb.AudienceI
 		cmdRankMonth := cmdRankMonthList[i]
 		cmdRankLastMonth := cmdRankLastMonthList[i]
 		cmdWiningStreak := cmdWiningStreakList[i]
+		cmdUserDataCustom := cmdUserDataCustomList[i]
 		info := &pb.AudienceInfo{
 			OpenId: openId,
 			Custom: make(map[string]*pb.AudienceCustom),
@@ -300,7 +301,7 @@ func GetAudienceInfoList(appId string, openIdList []string) (ret []*pb.AudienceI
 		if result, err := cmdWiningStreak.Result(); err == nil {
 			info.WinningStreak = int32(result)
 		}
-		if result, err := cmdUserDataCustomList[i].Result(); err == nil {
+		if result, err := cmdUserDataCustom.Result(); err == nil {
 			for k, v := range result {
 				userDataCustom := &pb.AudienceCustom{}
 				if err = json.Unmarshal([]byte(v), &userDataCustom); err == nil {
